@@ -1,0 +1,247 @@
+.workingspacehome {
+    width: 80%;
+    height: 100%;
+    background: #f5f5f5;
+    position: absolute;
+    right: 0px;
+  }
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .linechartbg {
+    position: absolute;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    height: 13rem;
+    width: 70%;
+  }
+  .Homeheading {
+    position: absolute;
+    font-size: 30px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 20px;
+    left: 30px;
+    height: 40px;
+  }
+  .motivaitontext {
+    font-size: 1.5rem;
+    margin-left: 10px;
+  }
+  .motivationbtn {
+    margin-left: 50px;
+  }
+  .motivationsection {
+    display: flex;
+  
+    justify-content: center;
+  }
+  .backgroundmotivation {
+    position: relative;
+    top: 100px;
+    height: 20%;
+    display: flex;
+    width: 70%;
+    background-color: white;
+  }
+  .date {
+    position: relative;
+    top: 70px;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  .typinghello {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    top: 80px;
+  }
+  
+  .calendarebg {
+    border-radius: 10px;
+    padding: 10px;
+    width: 70%;
+    position: absolute;
+    top: 35rem;
+  }
+  
+  .calendare {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @media (min-width: 1025px) {
+    .calendarebg {
+      border-radius: 10px;
+      padding: 10px;
+      width: 60%;
+      position: absolute;
+      top: 35rem;
+    }
+    .backgroundmotivation {
+      width: 60%;
+    }
+    .calendare {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .linechartbg {
+      position: absolute;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      height: 15rem;
+      width: 60%;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .motivaitontext {
+      font-size: 1.2rem;
+      margin-left: 10px;
+    }
+    .calendar {
+      width: 80%;
+    }
+    .motivationbtn {
+      padding: 10px;
+      margin-left: 15px;
+    }
+    .Homeheading {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      left: 0;
+      color: #c7200b;
+    }
+    .calendarebg {
+      top: 75%;
+    }
+    .workingspacehome {
+      width: 100%;
+      height: 750px;
+      background: #f5f5f5;
+      position: absolute;
+      right: 0px;
+    }
+    .linechartbg {
+      position: absolute;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      height: 13rem;
+      width: 70%;
+    }
+    .backgroundmotivation {
+      width: 70%;
+    }
+  }
+  
+  .wrapper {
+    /*This part is important for centering*/
+    display: grid;
+    place-items: center;
+  }
+  .typing-demo {
+    width: 310px;
+    animation: typing 2s steps(22), blink 0.4s step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid;
+    font-size: 2.2rem;
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+  }
+  
+  @keyframes blink {
+    50% {
+      border-color: transparent;
+    }
+  }
+  
+  @media (max-width: 420px) {
+    .motivaitontext {
+      font-size: 1rem;
+      margin-left: 5px;
+    }
+    .backgroundmotivation {
+      width: 100%;
+    }
+    .calendarebg {
+      top: 80%;
+      width: 100%;
+    }
+    .motivationbtn {
+      width: 70px;
+      height: 10px;
+      padding: 10px;
+      margin-left: 15px;
+    }
+    .Homeheading {
+      position: absolute;
+      font-size: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 30px;
+      left: 60px;
+      width: 90px;
+    }
+    .workingspacehome {
+      width: 100%;
+      height: 750px;
+      background: #f5f5f5;
+      position: absolute;
+      right: 0px;
+    }
+    .linechartbg {
+      position: absolute;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      height: 13rem;
+      width: 100%;
+    }
+  }
+  @media (max-width: 360px) {
+    .calendarebg {
+      width: 100%;
+    }
+    .backgroundmotivation {
+      width: 100%;
+    }
+    .linechartbg {
+      position: absolute;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      height: 13rem;
+      width: 100%;
+    }
+  }
