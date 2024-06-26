@@ -18,6 +18,9 @@ class GPTservice {
         filledImagePaths.push(DEFAULT_IMAGE_URL);
       }
 
+      console.log(filledImagePaths);
+
+
       const prompt = systemPrompt
         .replace('{subject}', subject)
         .replace('{language}', language)
@@ -25,7 +28,7 @@ class GPTservice {
         .replace('{grade}', `${grade}`);
 
       const response = await openai.chat.completions.create ({
-        model: "gpt-4",
+        model: "gpt-4o",
         messages: [{
                   role: "user",
                   content: [
@@ -58,12 +61,13 @@ class GPTservice {
 
       if (resContent) {
         const parsedRes = JSON.parse(resContent);
+        console.log(parsedRes);
         return parsedRes.mark as Mark;
       } else {
         return null;
       }
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error.message+"decwecew");
       return null;
     }
   }

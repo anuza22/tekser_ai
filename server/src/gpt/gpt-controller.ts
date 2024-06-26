@@ -1,42 +1,10 @@
-// import { Request, Response } from "express";
-// import { userPrompt } from "./prompt";
-// import * as path from 'path';
-// import GPTservice from "./gpt-service";
-
-// class GptController{
-//     private userService: GPTservice;
-
-//     constructor(userService: GPTservice){
-//         this.userService = userService;
-//     }
-
-//     checkHW = async (req: Request, res: Response) => {
-//         // const userPrompt = req.body.url;
-//         const imagePaths = [
-//             "https://schoolhack.kz/wp-content/uploads/2023/08/img_6397-scaled-1-768x1024.jpeg", 
-//             "https://schoolhack.kz/wp-content/uploads/2023/08/img_6398-scaled-1-768x1024.jpeg",
-//             "https://img.freepik.com/premium-photo/watercolor-paper-texture-background-with-clipping-path-white-paper-sheet-with-torn-edges-isolated-gray-art-paper-high-quality-texture-high-resolution_64749-3881.jpg",
-//             "https://img.freepik.com/premium-photo/watercolor-paper-texture-background-with-clipping-path-white-paper-sheet-with-torn-edges-isolated-gray-art-paper-high-quality-texture-high-resolution_64749-3881.jpg",
-//             "https://img.freepik.com/premium-photo/watercolor-paper-texture-background-with-clipping-path-white-paper-sheet-with-torn-edges-isolated-gray-art-paper-high-quality-texture-high-resolution_64749-3881.jpg"          ];
-//           console.log(imagePaths)
-//         // console.log("Req:")
-//         // console.log(userPrompt)
-//         // console.log("req ends")
-//         // const prompt = userPrompt;
-//         try{
-//             const response = await this.userService.checkHW(imagePaths);
-//             res.status(200).json(response);
-//         } catch (error: any) {
-//             res.status(500).json({ error: error.message });
-//           }
-//     };
-
-// }
-
-// export default GptController;
-
 import { Request, Response } from "express";
 import GPTservice from "./gpt-service";
+import { uploadFile } from "../middlewares/s3-middleware";
+import multer from "multer"; // Подключаем multer для обработки файлов
+
+const upload = multer(); // Настройка multer для обработки файлов
+
 
 class GptController {
   private userService: GPTservice;
@@ -46,14 +14,27 @@ class GptController {
   }
 
   checkHW = async (req: Request, res: Response) => {
-    const { imageUrls } = req.body;
+    const { imageUrls, subject, grade, language, textbook } = req.body;
+
+    const imageLinksfromBucket = []
+
+    for (const img in imageUrls){
+      imageLinksfromBucket.push(uploadFile(img))
+        
+    }
+
+
 
     if (!Array.isArray(imageUrls) || imageUrls.length > 5) {
       return res.status(400).json({ error: "You must provide an array of up to 5 image URLs." });
     }
 
+    if (!subject || !grade || !language || !textbook) {
+      return res.status(400).json({ error: "You must provide subject, grade, language, and textbook." });
+    }
+
     try {
-      const response = await this.userService.checkHW(imageUrls);
+      const response = await this.userService.checkHW(imageUrls, subject, grade, language, textbook);
       res.status(200).json(response);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -62,3 +43,4 @@ class GptController {
 }
 
 export default GptController;
+
