@@ -1,64 +1,47 @@
-import { S3 } from '@aws-sdk/client-s3'
-import { Upload } from '@aws-sdk/lib-storage'
+import { S3 } from '@aws-sdk/client-s3';
+import * as fs from 'fs';
 
-export const s3 = new S3({
-  region: process.env.AWS_REGION!,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID ||"",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ""
-  }
-})
+class S3Service {
+  private static instance: S3Service;
+  private s3: S3;
+  private bucketName: string;
 
-// export const listBuckets = async () =>
-//   await s3
-//     .listBuckets()
-//     .then((res) => res.Buckets)
-//     .catch((err) => console.log(`Error listing buckets: ${err.Code}`))
-
-// export const createBucket = async (Bucket: string) =>
-//   await s3
-//     .createBucket({ Bucket })
-//     .then((res) => console.log(res))
-//     .catch((err) => console.log(`Error creating a bucket: ${err.Code}`))
-
-// export const deleteBucket = async (Bucket: string) =>
-//   await s3
-//     .deleteBucket({ Bucket })
-//     .then((res) => console.log(res))
-//     .catch((err) => console.log(`Error deleting a bucket: ${err.Code}`))
-
-export const uploadFile = async (Bucket: string, name: string, file: Buffer) => {
-    const upload = new Upload({
-      client: s3,
-      params: {
-        Bucket,
-        Key: name,
-        Body: file,
-        ACL: 'public-read'
+  private constructor() {
+    this.s3 = new S3({
+      region: process.env.AWS_REGION!,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!
       }
     });
-  
-    try {
-      const data = await upload.done();
-      return data.Location;
-    } catch (err) {
-      console.error(`Error uploading a file: ${err}`);
-      throw err;
+    this.bucketName = process.env.AWS_BUCKET_NAME!;
+  }
+
+  public static getInstance(): S3Service {
+    if (!S3Service.instance) {
+      S3Service.instance = new S3Service();
     }
-  };
+    return S3Service.instance;
+  }
 
-export const updateFile = async (Bucket: string, name: string, file: Buffer) =>
-  await s3
-    .putObject({
-      Bucket,
-      Key: name,
-      Body: file
-    })
-    .then((res) => console.log(res))
-    .catch((err) => console.log(`Error updating a file: ${err.Code}`))
+  public async uploadFile(bucketName: string, key: string, body: Buffer): Promise<string> {
+    try {
+      await this.s3.putObject({
+        Bucket: bucketName,
+        Key: key,
+        Body: body,
+        ACL: 'public-read',
+        ContentType: 'image/png'
+      });
+      return `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+    } catch (error) {
+      console.error('Error uploading file to S3:', error);
+      throw error;
+    }
+  }
+}
 
-export const deleteFile = async (Bucket: string, name: string) =>
-  await s3
-    .deleteObject({ Bucket, Key: name })
-    .then((res) => console.log(res))
-    .catch((err) => console.log(`Error deleting a file: ${err.Code}`))
+export const uploadFile = async (bucketName: string, key: string, body: Buffer): Promise<string> => {
+  const s3Service = S3Service.getInstance();
+  return s3Service.uploadFile(bucketName, key, body);
+};
