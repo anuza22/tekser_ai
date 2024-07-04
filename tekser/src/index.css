@@ -1,0 +1,55 @@
+@font-face {
+  font-family: 'Poppinslight';
+  src: url('./assets/fonts/Poppins/Poppins-Light.ttf');
+}
+@font-face {
+  font-family: 'Poppinsregular';
+  src: url('./assets/fonts/Poppins/Poppins-Regular.ttf');
+}
+@font-face {
+  font-family: 'Poppinsbold';
+  src: url('./assets/fonts/Poppins/Poppins-Bold.ttf');
+}
+@font-face {
+  font-family: 'Poppinsmedium';
+  src: url('./assets/fonts/Poppins/Poppins-Medium.ttf');
+}
+@font-face {
+  font-family: 'Poppinssemibold';
+  src: url('./assets/fonts/Poppins/Poppins-SemiBold.ttf');
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.slick-slider {
+  width: 100%;
+  overflow: hidden;
+}
+.slick-list {
+  position: relative;
+  display: block !important;
+  width: 100%;
+}
+.slick-slide div {
+  width: auto;
+  margin-right: 10px;
+}
+.slick-slide img {
+  width: calc(100% - 10px) !important;
+}
+
+
+
+/* For the demo */
+.slick-prev,
+.slick-next {
+  z-index: 999 !important;
+}
+.slick-prev {
+  left: 25px !important;
+}
+.slick-next {
+  right: 25px !important;
+}

@@ -13,6 +13,8 @@ To get started with this project, follow these steps:
    ```bash
    npm install
    ```
+   		// "axios": "^1.7.2",
+
 
    or
 

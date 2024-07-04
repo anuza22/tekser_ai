@@ -1,14 +1,15 @@
 import { Router } from 'express';
 import GptService from './gpt-service';
 import GptController from './gpt-controller';
+import multer from "multer";
 
-//in order to provide our frontend with the user data, we need to specify user routes
+const upload = multer({ storage: multer.memoryStorage() });
 
 const gptRouter = Router();
 
 const gptService = new GptService();
 const gptController = new GptController(gptService);
 
-gptRouter.post('/marks/', gptController.checkHW);
+gptRouter.post('/marks/', upload.array('files', 5), gptController.checkHW);
 
 export default gptRouter;
