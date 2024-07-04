@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const baseUrl = "http://localhost:5000/api/v1"; // Укажите ваш URL
+const baseUrl = "https://aisun-production.up.railway.app/api/v1"; // Укажите ваш URL
 
 export const handleSignUp = createAsyncThunk(
   "authentication/handleSignUp",

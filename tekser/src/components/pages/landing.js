@@ -38,7 +38,7 @@ const Landing = () => {
             </button>
           </div>
           <div className="flex-1" id="image_group">
-            {/* <img src={LocalImg} alt="Group" /> */}
+            <img src={LocalImg.Group} alt="Group" />
           </div>
         </div>
         <div

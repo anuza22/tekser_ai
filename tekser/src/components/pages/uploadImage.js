@@ -37,7 +37,7 @@ const UploadImage = () => {
 
       setLoading(true);
       try {
-        const response = await axios.post('http://localhost:5000/api/v1/marks/', formData, {
+        const response = await axios.post('https://aisun-production.up.railway.app/api/v1/marks/', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

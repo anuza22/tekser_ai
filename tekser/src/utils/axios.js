@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:5000/api/v1', // your server URL
+  baseURL: 'https://aisun-production.up.railway.app', // your server URL
 });
 
 export default instance;
