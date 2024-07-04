@@ -45,7 +45,7 @@ app.use(express.json());
 
 // CORS setup
 const corsOptions = {
-    origin: 'http://localhost:3000', // URL вашего фронтенда
+    origin: 'https://aisun-vy43.vercel.app', // URL вашего фронтенда
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
