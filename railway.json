@@ -1,0 +1,23 @@
+{
+    "builds": [
+      {
+        "src": "tekser/",
+        "use": "@railway/nixpacks",
+        "cmd": "npm install && npm run build"
+      },
+      {
+        "src": "server/",
+        "use": "@railway/nixpacks",
+        "cmd": "npm install && npm start"
+      }
+    ],
+    "deploy": {
+      "tekser": {
+        "start": "npm start"
+      },
+      "server": {
+        "start": "npm run dev"
+      }
+    }
+  }
+  
