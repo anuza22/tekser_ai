@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import LeftSide from "../../layout/authLeft";
-import { getGoogleUrl, handleSignUp } from "../../redux/user/user";
+import { handleSignUp, getGoogleUrl } from "../../redux/user/user"; // Импорт вашего экшена
 
 const SignUp = () => {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [city, setCity] = useState("");
   const [error, setError] = useState({});
   // ** Google login redirectUri
   const redirectUri = window.location.origin + "/google-oauth";
@@ -16,39 +17,24 @@ const SignUp = () => {
   const store = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     handleValidate();
+    if (error.email === "" && error.password === "" && error.username === "" && error.city === "") {
+      const data = { email, password, username, city };
+      try {
+        await dispatch(handleSignUp(data)).unwrap();
+        navigate("/login");
+      } catch (err) {
+        console.error("SignUp error:", err);
+        setError({ signUpError: "Failed to sign up. Please try again." });
+      }
+    }
   };
 
   useEffect(() => {
     dispatch(getGoogleUrl(redirectUri));
-  }, [redirectUri, dispatch])
-
-  useEffect(() => {
-    if (error.email === "" && error.password === "" && error.username === "") {
-      const data = {
-        email: email,
-        password: password,
-        confirmPassword: password,
-        username: username,
-        upn: email,
-      };
-      dispatch(handleSignUp(data));
-    }
-  }, [error, email, password, username, dispatch]);
-
-  useEffect(() => {
-    if (store.response?.success === false) {
-      setError({
-        errors:
-          store.response.errors[0].errorMessage === "Duplicated" &&
-          "Email is duplicated. Please input another.",
-      });
-    } else if (store.response?.upn) {
-      navigate("/login");
-    }
-  }, [store, navigate]);
+  }, [redirectUri, dispatch]);
 
   const handleValidate = () => {
     let emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
@@ -65,6 +51,7 @@ const SignUp = () => {
           : "Password must be at least 8 characters"
         : "Password Field is required",
       username: username.length ? "" : "Username Field is required",
+      city: city.length ? "" : "City Field is required",
     });
   };
 
@@ -81,7 +68,7 @@ const SignUp = () => {
           </p>
           <div className="mb-6">
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block mb-1.5 text-sm font-poppinsMedium text-gray-900"
             >
               Username*
@@ -152,9 +139,33 @@ const SignUp = () => {
             )}
             <span className="text-sm">Must be at least 8 characters.</span>
           </div>
-          {error.errors && (
+          <div className="mb-6">
+            <label
+              htmlFor="city"
+              className="block mb-1.5 text-sm font-poppinsMedium text-gray-900"
+            >
+              City*
+            </label>
+            <input
+              type="text"
+              id="city"
+              className={`border text-base rounded-lg focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none block w-full py-2.5 px-3.5 ${
+                error.city
+                  ? "text-red-500 border-red-500"
+                  : "border-gray-300 text-gray-500"
+              }`}
+              placeholder="Enter your city"
+              onChange={(e) => setCity(e.target.value)}
+            />
+            {error.city && (
+              <div className="font-poppinsMedium mt-2 text-red-500">
+                {error.city}
+              </div>
+            )}
+          </div>
+          {error.signUpError && (
             <div className="font-poppinsMedium mb-2 text-red-500">
-              {error.errors}
+              {error.signUpError}
             </div>
           )}
           <button
@@ -197,7 +208,7 @@ const SignUp = () => {
             <span className="text-base">Sign up with Google</span>
           </a>
           <div className="mb-8 text-center text-sm text-gray-600">
-            By creating a account I acknowledge that i have read and fully
+            By creating a account I acknowledge that I have read and fully
             understand the{" "}
             <Link
               to="/privacy"

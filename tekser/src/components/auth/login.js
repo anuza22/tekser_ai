@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import LeftSide from "../../layout/authLeft";
-import {
-  getGoogleToken,
-  getGoogleUrl,
-  handleSignIn,
-  clearState,
-} from "../../redux/user/user";
+import { getGoogleToken, getGoogleUrl, handleSignIn, clearState } from "../../redux/user/user"; // Импорт вашего экшена
 
 const Login = () => {
   // ** States
@@ -23,14 +18,24 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     handleValidate();
+    if (error.email === "" && error.password === "") {
+      const data = { email, password };
+      try {
+        await dispatch(handleSignIn(data)).unwrap();
+        navigate("/");
+      } catch (err) {
+        console.error("Login error:", err);
+        setError({ loginError: "Email or Password was incorrect" });
+      }
+    }
   };
 
   useEffect(() => {
     dispatch(getGoogleUrl(redirectUri));
-  }, [redirectUri, dispatch])
+  }, [redirectUri, dispatch]);
 
   useEffect(() => {
     if (Object.keys(store.response).length) {
@@ -39,33 +44,12 @@ const Login = () => {
   }, [dispatch, store]);
 
   useEffect(() => {
-    if (error.email === "" && error.password === "") {
-      const data = {
-        username: email,
-        password: password,
-      };
-      dispatch(handleSignIn(data));
-    }
-  }, [error, dispatch, email, password]);
-
-  let code = queryParameters.get("code");
-  let googleLogin = (window.location.href.indexOf("/google-oauth") > -1)
-  if (code && googleLogin) {
-    dispatch(getGoogleToken({ code, redirectUri }));
-  }
-
-  useEffect(() => {
     if (
       Object.keys(store.userData).length &&
       store.userData?.status === "Success"
     ) {
       setError({});
       navigate("/");
-    } else if (
-      Object.keys(store.error).length &&
-      store.error?.message === "VALIDATION_ERROR"
-    ) {
-      setError({ loginError: "Email or Password was incorrect" });
     }
   }, [store, navigate]);
 
@@ -86,11 +70,17 @@ const Login = () => {
     });
   };
 
+  let code = queryParameters.get("code");
+  let googleLogin = window.location.href.indexOf("/google-oauth") > -1;
+  if (code && googleLogin) {
+    dispatch(getGoogleToken({ code, redirectUri }));
+  }
+
   return (
     <div className="min-h-screen md:flex md:justify-center md:items-center font-poppinslight">
       <LeftSide />
       <div className="flex md:w-1/2 min-h-screen justify-center py-10 items-center bg-white">
-        <form className="bg-white w-2/3 lg:w-1/2" onSubmit={onSubmit}>
+        <form className="bg-white w-2/3 lg:w-1/2" onSubmit={handleSubmit}>
           <h1 className="text-gray-800 font-poppinsSemiBold text-3xl mb-3">
             Log in
           </h1>
