@@ -3,15 +3,13 @@ import { useNavigate } from "react-router-dom";
 import MainLayout from "../../layout/mainLayout";
 import { LocalImg } from "../basic/imgProvider";
 import Video from "../../assets/video/Photomath.mp4";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useState } from 'react';
 
 const Landing = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [uploadCount, setUploadCount] = useState(1);
-
 
   const getstarted = () => {
     navigate("/upload");
@@ -20,7 +18,7 @@ const Landing = () => {
   useEffect(() => {
     const fetchUploadCount = async () => {
       try {
-        const response = await axios.get('https://aisun-production.up.railway.app/api/v1/upload-count');
+        const response = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
         setUploadCount(response.data.uploadCount);
       } catch (error) {
         console.error('Error fetching upload count:', error);
@@ -93,9 +91,9 @@ const Landing = () => {
             </div>
             <div className="sm:h-32 h-1 sm:w-1 w-full bg-primary-100"></div>
             <div className="flex flex-col text-center sm:w-1/3 w-2/3">
-            <span className="xl:text-5xl lg:text-3xl text-2xl font-poppinsBold text-primary-600 mb-1">
-      {uploadCount}
-             </span>
+              <span className="xl:text-5xl lg:text-3xl text-2xl font-poppinsBold text-primary-600 mb-1">
+                {uploadCount}
+              </span>
               <span className="sm:text-xl font-poppinsRegular text-primary-900">
               {t('happyTeachers')}
               </span>

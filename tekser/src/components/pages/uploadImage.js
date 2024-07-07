@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,6 @@ import { MoonLoader } from 'react-spinners';
 import MainLayout from "../../layout/mainLayout";
 import PreviewModal from "../basic/uploadModal";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import { useEffect } from 'react';
 
 const subjects = ["Mathematics", "Physics", "Chemistry", "Biology"];
 const grades = [5, 6, 7, 8, 9, 10, 11, 12];
@@ -24,13 +23,10 @@ const UploadImage = () => {
   const [language, setLanguage] = useState(i18n.language);
   const [uploadCount, setUploadCount] = useState(0);
 
-  const handleFileChange = (event) => {
-    setSelectedFiles(event.target.files);
-  };
   useEffect(() => {
     const fetchUploadCount = async () => {
       try {
-        const response = await axios.get('https://aisun-production.up.railway.app/api/v1/upload-count');
+        const response = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
         setUploadCount(response.data.uploadCount);
       } catch (error) {
         console.error('Error fetching upload count:', error);
@@ -38,6 +34,10 @@ const UploadImage = () => {
     };
     fetchUploadCount();
   }, []);
+
+  const handleFileChange = (event) => {
+    setSelectedFiles(event.target.files);
+  };
 
   const handleUpload = async () => {
     if (selectedFiles) {
@@ -58,6 +58,9 @@ const UploadImage = () => {
           },
         });
         setResults(response.data);
+        await axios.post('https://aisun-production.up.railway.app/api/increment-upload-count');
+        const uploadCountResponse = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
+        setUploadCount(uploadCountResponse.data.uploadCount);
       } catch (error) {
         console.error('Error uploading files:', error);
         alert('Error uploading files.');
