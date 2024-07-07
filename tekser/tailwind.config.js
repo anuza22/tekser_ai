@@ -52,11 +52,11 @@ module.exports = {
       },
     },
     fontFamily: {
-      'poppinslight': ['poppinslight','Poppinslight'],
-      'poppinsBold': ['poppinsBold', 'Poppinsbold'],
-      'poppinsRegular': ['poppinsRegular', 'Poppinsregular'],
-      'poppinsMedium': ['poppinsMedium', 'Poppinsmedium'],
-      'poppinsSemiBold': ['poppinsSemiBold', 'Poppinsremibold'],
+      'poppinslight': ['OpenSans-Light', 'Poppinslight', 'sans-serif'],
+      'poppinsBold': ['OpenSans-ExtraBold', 'Poppinsbold', 'sans-serif'],
+      'poppinsRegular': ['OpenSans-Regular', 'Poppinsregular', 'sans-serif'],
+      'poppinsMedium': ['OpenSans-Medium', 'Poppinsmedium', 'sans-serif'],
+      'poppinsSemiBold': ['OpenSans-SemiBold', 'Poppinssemibold', 'sans-serif'],
     },
     listStyleType: {
       none: 'none',

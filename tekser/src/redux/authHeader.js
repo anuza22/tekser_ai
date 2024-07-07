@@ -10,9 +10,7 @@ export const handleSignUp = createAsyncThunk(
     const response = await axios.post(`${baseUrl}/register`, {
       email: data.email,
       password: data.password,
-      username: data.username,
-      city: data.city,
-    });
+      username: data.username    });
     return response.data;
   }
 );

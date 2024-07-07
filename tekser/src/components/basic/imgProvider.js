@@ -48,8 +48,14 @@ export const LocalImg = {
   SuperheroFemale: require("../../assets/img/landing/Superhero-Female.png"),
   SuperheroMale: require("../../assets/img/landing/Superhero-Male.png"),
   Wizzard: require("../../assets/img/landing/Wizzard.png"),
-  Group: require("../../assets/img/landing/Group.png"),
+  // Group: require("../../assets/img/landing/Group.png"),
   // check_1: require("../../assets/img/landing/check_1")
+  Group: require("../../assets/img/landing/landing.jpg"),
+  EnglishFlag: require("../../assets/img/landing/united-states.png"),
+  RussianFlag: require("../../assets/img/landing/russia.png"),
+  KazakhFlag: require("../../assets/img/landing/kazakhstan.png"),
+
+
 
 
 };

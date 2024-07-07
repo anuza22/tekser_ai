@@ -10,6 +10,8 @@ import { LocalImg } from "../components/basic/imgProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu, Transition } from "@headlessui/react";
 import { handleSignOut } from "../redux/user/user";
+import LanguageSelector from '../components/basic/languageSelector';
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -160,14 +162,19 @@ const Header = () => {
                   </li>
                 </>
               ) : (
-                <li>
-                  <button
-                    className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
-                    onClick={LoginHandle}
-                  >
-                    Log In
-                  </button>
-                </li>
+                // <li>
+                //   <button
+                //     className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
+                //     onClick={LoginHandle}
+                //   >
+                //     Log In
+                //   </button>
+                // </li>
+                
+                  <li>
+                    <LanguageSelector />
+                  </li>
+                
               )}
               <li>
                 <button

@@ -1,13 +1,36 @@
-
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../../layout/mainLayout";
 import { LocalImg } from "../basic/imgProvider";
 import Video from "../../assets/video/Photomath.mp4";
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const [uploadCount, setUploadCount] = useState(1);
+
+
   const getstarted = () => {
     navigate("/upload");
+  };
+  
+  useEffect(() => {
+    const fetchUploadCount = async () => {
+      try {
+        const response = await axios.get('https://aisun-production.up.railway.app/api/v1/upload-count');
+        setUploadCount(response.data.uploadCount);
+      } catch (error) {
+        console.error('Error fetching upload count:', error);
+      }
+    };
+    fetchUploadCount();
+  }, []);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
   };
 
   return (
@@ -24,17 +47,16 @@ const Landing = () => {
             <h1 className="font-poppinsBold 2xl:text-[88px] xl:text-7xl sm:text-5xl text-3xl 2xl:leading-[90px] text-gray-900 lg:mb-6 mb-4 lg:mt-0 sm:mt-8 mt-4">
               {/* TekserAI{" "} */}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#842EE5] via-[#E1338A] to-[#FBA174]">
-                Check Your Homework!
+              {t('title')}
               </span>
             </h1>
             <p className="font-poppinsRegular text-gray-600 sm:text-xl mb-8">
-              Upload your handwritten homework and let our AI do the rest! TekserAI checks, grades, and provides feedback on your assignments, saving teachers time and effort.
-            </p>
+            {t('description')}            </p>
             <button
               onClick={getstarted}
               className="block lg:text-lg sm:text-base text-sm bg-gradient-to-r from-[#842EE5] via-[#E1338A] to-[#FBA174] py-3 sm:py-4 px-6 sm:px-8 rounded-lg text-white font-poppinsSemiBold"
             >
-              Try TekserAI for Free!
+              {t('getStarted')}
             </button>
           </div>
           <div className="flex-1" id="image_group">
@@ -46,7 +68,7 @@ const Landing = () => {
           id="offer"
         >
           <h2 className="text-center mt-8 lg:mt-0 font-poppinsBold xl:text-6xl md:text-4xl text-3xl text-gray-900 mb-6">
-            Why Choose{" "}
+          {t('whyChoose')}{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#842EE5] via-[#E1338A] to-[#FBA174]">
               TekserAI?
             </span>
@@ -54,28 +76,28 @@ const Landing = () => {
           <div className="w-full flex flex-col sm:flex-row justify-between items-center shadow-3xl xl:px-16 px-4 py-8 xl:gap-4 gap-2 rounded-2xl">
             <div className="flex flex-col text-center sm:w-1/3 w-2/3">
               <span className="xl:text-5xl lg:text-3xl text-2xl font-poppinsBold text-primary-600 mb-1">
-                98%
+                85%
               </span>
               <span className="sm:text-xl font-poppinsRegular text-primary-900">
-                Accuracy in Grading
+              {t('accuracy')}
               </span>
             </div>
             <div className="sm:h-32 h-1 sm:w-1 w-full bg-primary-100"></div>
             <div className="flex flex-col text-center sm:w-1/3 w-2/3">
               <span className="xl:text-5xl lg:text-3xl text-2xl font-poppinsBold text-primary-600 mb-1">
-                50%
+                90%
               </span>
               <span className="sm:text-xl font-poppinsRegular text-primary-900">
-                Time Saved
+              {t('timeSaved')}
               </span>
             </div>
             <div className="sm:h-32 h-1 sm:w-1 w-full bg-primary-100"></div>
             <div className="flex flex-col text-center sm:w-1/3 w-2/3">
-              <span className="xl:text-5xl lg:text-3xl text-2xl font-poppinsBold text-primary-600 mb-1">
-                5K+
-              </span>
+            <span className="xl:text-5xl lg:text-3xl text-2xl font-poppinsBold text-primary-600 mb-1">
+      {uploadCount}
+             </span>
               <span className="sm:text-xl font-poppinsRegular text-primary-900">
-                Happy Teachers
+              {t('happyTeachers')}
               </span>
             </div>
           </div>
@@ -87,15 +109,13 @@ const Landing = () => {
           <div className="flex flex-1 flex-col mr-6">
             <div className="flex flex-col mb-6">
               <h2 className="2xl:w-2/3 text-center md:text-start mt-6 md:mt-0 flex flex-col font-poppinsBold xl:text-6xl md:text-4xl xl:leading-[76px] text-3xl text-gray-900">
-                Efficient, Reliable, and{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#842EE5] via-[#E1338A] to-[#FBA174]">
-                  Time-Saving
+              {t('efficient')}{" "}                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#842EE5] via-[#E1338A] to-[#FBA174]">
+              {t('Time-Saving')}
                 </span>
               </h2>
             </div>
             <div className="font-poppinsRegular sm:text-xl text-gray-600">
-              TekserAI is the perfect solution for teachers looking to streamline the grading process and focus on what truly matters – teaching and inspiring students.
-            </div>
+            {t('solution')}            </div>
           </div>
           <div className="flex-1 py-14 flex justify-center">
             <video
@@ -113,9 +133,9 @@ const Landing = () => {
           id="example"
         >
           <h2 className="text-center font-poppinsBold xl:text-6xl md:text-4xl text-3xl text-gray-900 mb-8">
-            Explore Our{" "}
+          {t('exploreFeatures')}{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#842EE5] via-[#E1338A] to-[#FBA174]">
-              Features
+            {t('Features')}
             </span>
           </h2>
           <div className="flex justify-center flex-wrap gap-4 md:gap-8 mb-8">
@@ -128,7 +148,7 @@ const Landing = () => {
                 className="rounded-lg md:rounded-[30px] 3xl:w-64 2xl:w-56 xl:w-48 md:w-40 sm:w-32 w-24 3xl:h-64 2xl:h-56 xl:h-48 md:h-40 sm:h-32 h-24"
               />
               <span className="font-poppinsBold text-sm sm:text-xl md:text-2xl text-white absolute md:left-6 sm:left-5 left-4 md:bottom-[18px] sm:bottom-3 bottom-2">
-                Instant Feedback
+              {t('instantFeedback')}
               </span>
             </div>
             <div className="relative">
@@ -139,7 +159,7 @@ const Landing = () => {
                 className="rounded-lg md:rounded-[30px] 3xl:w-64 2xl:w-56 xl:w-48 md:w-40 sm:w-32 w-24 3xl:h-64 2xl:h-56 xl:h-48 md:h-40 sm:h-32 h-24"
               />
               <span className="font-poppinsBold text-sm sm:text-xl md:text-2xl text-white absolute md:left-6 sm:left-5 left-4 md:bottom-[18px] sm:bottom-3 bottom-2">
-                Detailed Analytics
+              {t('detailedAnalytics')}
               </span>
             </div>
             <div className="relative">
@@ -150,12 +170,12 @@ const Landing = () => {
                 className="rounded-lg md:rounded-[30px] 3xl:w-64 2xl:w-56 xl:w-48 md:w-40 sm:w-32 w-24 3xl:h-64 2xl:h-56 xl:h-48 md:h-40 sm:h-32 h-24"
               />
               <span className="font-poppinsBold text-sm sm:text-xl md:text-2xl text-white absolute md:left-6 sm:left-5 left-4 md:bottom-[18px] sm:bottom-3 bottom-2">
-                AI-Powered Grading
+              {t('aiPowered')}
               </span>
             </div>
           </div>
           <div className="text-center font-poppinsBold text-gray-900 xl:text-4xl md:text-2xl text-lg">
-            And much more...
+          {t('andMuchMore')}
           </div>
         </div>
         <div
@@ -164,20 +184,19 @@ const Landing = () => {
         >
           <div className="w-full pb-8 flex flex-col text-center">
             <h2 className="font-poppinsBold xl:text-6xl md:text-4xl text-3xl text-gray-900 mb-6">
-              Get Started with{" "}
+            {t('getStartedToday')}{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#842EE5] via-[#E1338A] to-[#FBA174]">
-                TekserAI Today!
+                TekserAI!
               </span>
             </h2>
             <p className="font-poppinsRegular sm:text-xl text-gray-600">
-              Upload your homework and receive comprehensive feedback and grading within minutes.
-            </p>
+            {t('uploadHomework')}            </p>
           </div>
           <button
             onClick={getstarted}
             className="block lg:text-lg lg:w-64 w-48 bg-gradient-to-r from-[#842EE5] via-[#E1338A] to-[#FBA174] py-3 sm:py-4 px-6 sm:px-8 rounded-lg text-white font-poppinsSemiBold"
           >
-            Try for Free!
+            {t('tryForFree')}
           </button>
         </div>
       </div>

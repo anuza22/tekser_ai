@@ -2,7 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import authHeader from "../authHeader";
 
-const baseUrl = process.env.REACT_APP_BASE_URL;
+// const baseUrl = `https://aisun-production.up.railway.app/api/v1`;
+const baseUrl = `http://localhost:6161/api/v1`;
+
 
 export const getUser = createAsyncThunk("authentication/getUser", async () => {
   const item = window.localStorage.getItem("userData");
@@ -66,18 +68,36 @@ export const getGoogleToken = createAsyncThunk(
   }
 );
 
+// export const handleSignUp = createAsyncThunk(
+//   "authentication/handleSignUp",
+//   async (data) => {
+//     const signUp = await axios
+//       .post(baseUrl + "users/register", {
+//         upn: data.upn,
+//         password: data.password,
+//         confirmPassword: data.confirmPassword,
+//         name: data.username,
+//         email: data.email,
+//         gender: 1,
+//       })
+//       .then((response) => {
+//         return response.data;
+//       })
+//       .catch((err) => {
+//         console.log("signUpError => ", err);
+//         return err.response.data;
+//       });
+//     return signUp;
+//   }
+// );
+
 export const handleSignUp = createAsyncThunk(
-  "authentication/handleSignUp",
+  "Authorization",
   async (data) => {
-    const signUp = await axios
-      .post(baseUrl + "users/register", {
-        upn: data.upn,
-        password: data.password,
-        confirmPassword: data.confirmPassword,
-        name: data.username,
-        email: data.email,
-        gender: 1,
-      })
+    const response = await axios.post(`${baseUrl}/register`, {
+      email: data.email,
+      password: data.password,
+      username: data.username    })
       .then((response) => {
         return response.data;
       })
@@ -85,9 +105,10 @@ export const handleSignUp = createAsyncThunk(
         console.log("signUpError => ", err);
         return err.response.data;
       });
-    return signUp;
+    return response;
   }
 );
+
 
 export const handleSignIn = createAsyncThunk(
   "authentication/handleSignIn",

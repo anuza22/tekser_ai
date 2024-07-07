@@ -2,28 +2,27 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import LeftSide from "../../layout/authLeft";
-import { handleSignUp, getGoogleUrl } from "../../redux/user/user"; // Импорт вашего экшена
+import { handleSignUp } from "../../redux/user/user"; // Импорт вашего экшена
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-  const [city, setCity] = useState("");
   const [error, setError] = useState({});
   // ** Google login redirectUri
-  const redirectUri = window.location.origin + "/google-oauth";
+  // const redirectUri = window.location.origin + "/google-oauth";
 
   const dispatch = useDispatch();
   const store = useSelector((state) => state.auth);
-
   const navigate = useNavigate();
+
   const onSubmit = async (e) => {
     e.preventDefault();
     handleValidate();
-    if (error.email === "" && error.password === "" && error.username === "" && error.city === "") {
-      const data = { email, password, username, city };
+    if (error.email === "" && error.password === "" && error.username === "" ) {
+      const data = { email, password, username };
       try {
-        await dispatch(handleSignUp(data)).unwrap();
+        await dispatch(handleSignUp(data));
         navigate("/login");
       } catch (err) {
         console.error("SignUp error:", err);
@@ -32,9 +31,9 @@ const SignUp = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(getGoogleUrl(redirectUri));
-  }, [redirectUri, dispatch]);
+  // useEffect(() => {
+  //   dispatch(getGoogleUrl(redirectUri));
+  // }, [redirectUri, dispatch]);
 
   const handleValidate = () => {
     let emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
@@ -50,8 +49,7 @@ const SignUp = () => {
           ? ""
           : "Password must be at least 8 characters"
         : "Password Field is required",
-      username: username.length ? "" : "Username Field is required",
-      city: city.length ? "" : "City Field is required",
+      username: username.length ? "" : "Username Field is required"
     });
   };
 
@@ -139,30 +137,7 @@ const SignUp = () => {
             )}
             <span className="text-sm">Must be at least 8 characters.</span>
           </div>
-          <div className="mb-6">
-            <label
-              htmlFor="city"
-              className="block mb-1.5 text-sm font-poppinsMedium text-gray-900"
-            >
-              City*
-            </label>
-            <input
-              type="text"
-              id="city"
-              className={`border text-base rounded-lg focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none block w-full py-2.5 px-3.5 ${
-                error.city
-                  ? "text-red-500 border-red-500"
-                  : "border-gray-300 text-gray-500"
-              }`}
-              placeholder="Enter your city"
-              onChange={(e) => setCity(e.target.value)}
-            />
-            {error.city && (
-              <div className="font-poppinsMedium mt-2 text-red-500">
-                {error.city}
-              </div>
-            )}
-          </div>
+       
           {error.signUpError && (
             <div className="font-poppinsMedium mb-2 text-red-500">
               {error.signUpError}

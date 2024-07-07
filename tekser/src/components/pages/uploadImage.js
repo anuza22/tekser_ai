@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { MoonLoader } from 'react-spinners';
 import MainLayout from "../../layout/mainLayout";
 import PreviewModal from "../basic/uploadModal";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { useEffect } from 'react';
 
 const subjects = ["Mathematics", "Physics", "Chemistry", "Biology"];
 const grades = [5, 6, 7, 8, 9, 10, 11, 12];
 const languages = ["English", "Russian", "Kazakh"];
 
 const UploadImage = () => {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [subject, setSubject] = useState(subjects[0]);
@@ -18,11 +21,23 @@ const UploadImage = () => {
   const [kindness, setKindness] = useState(50);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(null);
-  const [language, setLanguage] = useState(languages[0]);
+  const [language, setLanguage] = useState(i18n.language);
+  const [uploadCount, setUploadCount] = useState(0);
 
   const handleFileChange = (event) => {
     setSelectedFiles(event.target.files);
   };
+  useEffect(() => {
+    const fetchUploadCount = async () => {
+      try {
+        const response = await axios.get('https://aisun-production.up.railway.app/api/v1/upload-count');
+        setUploadCount(response.data.uploadCount);
+      } catch (error) {
+        console.error('Error fetching upload count:', error);
+      }
+    };
+    fetchUploadCount();
+  }, []);
 
   const handleUpload = async () => {
     if (selectedFiles) {
@@ -55,13 +70,13 @@ const UploadImage = () => {
   return (
     <MainLayout>
       <div className="flex flex-col flex-1 justify-center items-center px-4 sm:px-10" id="upload">
-        <h1 className="font-poppinsSemiBold text-3xl mt-8 sm:mt-16 text-center">Upload Your Homework</h1>
+        <h1 className="font-poppinsSemiBold text-3xl mt-8 sm:mt-16 text-center">{t('uploadYourHomework')}</h1>
         <h2 className="mt-1 text-gray-600 text-center text-base">
-          Upload your handwritten homework, and our AI will check it for you!
+          {t('uploadHandwrittenHomework')}
         </h2>
         <div className="mt-6 w-full max-w-xl">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">
-            Select Subject
+            {t('selectSubject')}
           </label>
           <select
             id="subject"
@@ -78,7 +93,7 @@ const UploadImage = () => {
         </div>
         <div className="mt-4 w-full max-w-xl">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="grade">
-            Select Grade
+            {t('selectGrade')}
           </label>
           <select
             id="grade"
@@ -95,7 +110,7 @@ const UploadImage = () => {
         </div>
         <div className="mt-4 w-full max-w-xl">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="language">
-            Select Language
+            {t('selectLanguage')}
           </label>
           <select
             id="language"
@@ -112,7 +127,7 @@ const UploadImage = () => {
         </div>
         <div className="mt-4 w-full max-w-xl">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="kindness">
-            Kindness Level
+            {t('kindnessLevel')}
           </label>
           <input
             id="kindness"
@@ -134,7 +149,7 @@ const UploadImage = () => {
             </div>
             <div className="my-6 flex flex-wrap justify-center items-center" id="upload_image">
               <label className="cursor-pointer bg-primary-600 text-white font-poppinsSemiBold py-2 px-4 rounded-lg">
-                Choose Files
+                {t('chooseFiles')}
                 <input
                   type="file"
                   className="hidden"
@@ -148,12 +163,12 @@ const UploadImage = () => {
                 className="bg-primary-600 rounded-lg px-11 py-2.5 mt-6 text-white font-poppinsSemiBold text-sm"
                 onClick={handleUpload}
               >
-                Upload
+                {t('upload')}
               </button>
             </div>
             <div className="mt-6 mb-20 text-center" id="examples">
               <span className="font-poppinsSemiBold text-3xl">
-                Examples:{" "}
+                {t('examples')}:{" "}
               </span>
               <div className="mt-6 flex flex-wrap justify-center items-center" id="upload_example_group">
                 <div className="w-80 sm:w-60 mb-4 sm:mb-0 sm:mr-4">
@@ -171,14 +186,14 @@ const UploadImage = () => {
         )}
         {results && (
           <div className="mt-10 w-full max-w-3xl p-6 bg-white shadow rounded-lg">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Results</h2>
-            <p className="mb-2"><strong>Mark:</strong> {results.mark}</p>
-            <p className="mb-2"><strong>Correct Problems:</strong> {results.correct_problems}</p>
-            <p className="mb-2"><strong>Wrong Tasks:</strong> {results.wrong_tasks}</p>
-            <p className="mb-2"><strong>Feedback:</strong> {results.feedback}</p>
-            <p className="mb-2"><strong>Mistakes:</strong> {results.mistakes}</p>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">{t('results')}</h2>
+            <p className="mb-2"><strong>{t('mark')}:</strong> {results.mark}</p>
+            <p className="mb-2"><strong>{t('correctProblems')}:</strong> {results.correct_problems}</p>
+            <p className="mb-2"><strong>{t('wrongTasks')}:</strong> {results.wrong_tasks}</p>
+            <p className="mb-2"><strong>{t('feedback')}:</strong> {results.feedback}</p>
+            <p className="mb-2"><strong>{t('mistakes')}:</strong> {results.mistakes}</p>
             <div className="mt-4">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Additional Resources</h3>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">{t('additionalResources')}</h3>
               <ul className="list-disc list-inside">
                 {results.searchLinks && results.searchLinks.map((link, index) => (
                   <li key={index}>
@@ -190,11 +205,11 @@ const UploadImage = () => {
             <div className="flex justify-between items-center mt-6">
               <div className="flex items-center text-green-700">
                 <CheckCircleIcon className="w-5 h-5 mr-2" />
-                <span className="font-poppinsSemiBold">Good Job!</span>
+                <span className="font-poppinsSemiBold">{t('goodJob')}</span>
               </div>
               <div className="flex items-center text-red-700">
                 <XCircleIcon className="w-5 h-5 mr-2" />
-                <span className="font-poppinsSemiBold">Need Improvement</span>
+                <span className="font-poppinsSemiBold">{t('needImprovement')}</span>
               </div>
             </div>
           </div>
