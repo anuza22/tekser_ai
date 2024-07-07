@@ -6,6 +6,7 @@ import { logger } from './logger';
 import cors from 'cors';
 import multer from 'multer';
 import * as fs from 'fs';
+import mongoose from 'mongoose';
 
 
 const app = express();
@@ -18,6 +19,19 @@ connectDB();
 app.use(logger);
 app.use(express.json());
 
+let uploadCount = 1;
+
+app.use(cors());
+app.use(express.json());
+
+app.get('/api/upload-count', (req, res) => {
+  res.json({ uploadCount });
+});
+
+app.post('/api/increment-upload-count', (req, res) => {
+  uploadCount++;
+  res.sendStatus(200);
+});
 
 // app.post('/upload', upload.array('files', 5), async (req: Request, res: Response) => {
 //   if (!req.files) {
@@ -46,21 +60,14 @@ app.use(express.json());
 // CORS setup
 const corsOptions = {
     origin: 'https://aisun-vy43.vercel.app', // URL вашего фронтенда
-    optionsSuccessStatus: 200
+    // origin: "http://localhost:3000",
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 };
 app.use(cors(corsOptions));
 
-app.use('/api/v1/', globalRouter);
-app.get('/api/menu', (req, res) => {
-    const menuData = {
-      items: [
-        { id: 1, title: 'Home', link: '/' },
-        { id: 2, title: 'About', link: '/about' },
-        // Add more menu items here
-      ],
-    };
-    res.json(menuData);
-  });
+app.use('/api/v1', globalRouter);
 
 app.listen(PORT, () => {
     console.log(`Server runs at http://localhost:${PORT}`);
