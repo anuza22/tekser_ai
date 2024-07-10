@@ -7,6 +7,7 @@ import cors from 'cors';
 import multer from 'multer';
 import * as fs from 'fs';
 import mongoose from 'mongoose';
+import { loginToKundelik } from './kundelik/kundelik-service';
 
 
 const app = express();
@@ -72,3 +73,7 @@ app.use('/api/v1', globalRouter);
 app.listen(PORT, () => {
     console.log(`Server runs at http://localhost:${PORT}`);
 });
+
+loginToKundelik('ibadullaevmanas', 'Superboy_2001')
+.then(() => console.log('Process completed'))
+.catch(error => console.error('Process failed:', error));
