@@ -6,15 +6,17 @@ import { MoonLoader } from 'react-spinners';
 import MainLayout from "../../layout/mainLayout";
 import PreviewModal from "../basic/uploadModal";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import UploadGrid from '../basic/uploadGrid';
 
 const subjects = ["Mathematics", "Physics", "Chemistry", "Biology"];
 const grades = [5, 6, 7, 8, 9, 10, 11, 12];
 const languages = ["English", "Russian", "Kazakh"];
+const uploadTypes = ["Homework", "СОР СОЧ"];
 
 const UploadImage = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const [selectedFiles, setSelectedFiles] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState({ homework: null, sor_soch: [null, null] });
   const [subject, setSubject] = useState(subjects[0]);
   const [grade, setGrade] = useState(grades[0]);
   const [kindness, setKindness] = useState(50);
@@ -22,6 +24,7 @@ const UploadImage = () => {
   const [results, setResults] = useState(null);
   const [language, setLanguage] = useState(i18n.language);
   const [uploadCount, setUploadCount] = useState(0);
+  const [uploadType, setUploadType] = useState(uploadTypes[0]);
 
   useEffect(() => {
     const fetchUploadCount = async () => {
@@ -35,38 +38,59 @@ const UploadImage = () => {
     fetchUploadCount();
   }, []);
 
-  const handleFileChange = (event) => {
-    setSelectedFiles(event.target.files);
+  const handleFileChange = (event, index) => {
+    const files = event.target.files;
+    setSelectedFiles(prevState => {
+      if (uploadType === "Homework") {
+        return { ...prevState, homework: files };
+      } else {
+        const sorSochFiles = [...prevState.sor_soch];
+        sorSochFiles[index] = files;
+        return { ...prevState, sor_soch: sorSochFiles };
+      }
+    });
   };
 
   const handleUpload = async () => {
-    if (selectedFiles) {
-      const formData = new FormData();
-      for (let i = 0; i < selectedFiles.length; i++) {
-        formData.append('files', selectedFiles[i]);
+    const formData = new FormData();
+    if (uploadType === "Homework") {
+      if (selectedFiles.homework) {
+        for (let i = 0; i < selectedFiles.homework.length; i++) {
+          formData.append('files', selectedFiles.homework[i]);
+        }
       }
-      formData.append("subject", subject);
-      formData.append("grade", grade);
-      formData.append("kindness", kindness);
-      formData.append("language", language);
+    } else {
+      selectedFiles.sor_soch.forEach((files, index) => {
+        if (files) {
+          for (let i = 0; i < files.length; i++) {
+            formData.append(`files_sor_soch_${index}`, files[i]);
+          }
+        }
+      });
+    }
 
-      setLoading(true);
-      try {
-        const response = await axios.post('https://aisun-production.up.railway.app/api/v1/marks/', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        setResults(response.data);
-        await axios.post('https://aisun-production.up.railway.app/api/increment-upload-count');
-        const uploadCountResponse = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
-        setUploadCount(uploadCountResponse.data.uploadCount);
-      } catch (error) {
-        console.error('Error uploading files:', error);
-        alert('Error uploading files.');
-      } finally {
-        setLoading(false);
-      }
+    formData.append("subject", subject);
+    formData.append("grade", grade);
+    formData.append("kindness", kindness);
+    formData.append("language", language);
+    formData.append("uploadType", uploadType);
+
+    setLoading(true);
+    try {
+      const response = await axios.post('https://aisun-production.up.railway.app/api/v1/marks/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setResults(response.data);
+      await axios.post('https://aisun-production.up.railway.app/api/increment-upload-count');
+      const uploadCountResponse = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
+      setUploadCount(uploadCountResponse.data.uploadCount);
+    } catch (error) {
+      console.error('Error uploading files:', error);
+      alert('Error uploading files.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,6 +101,26 @@ const UploadImage = () => {
         <h2 className="mt-1 text-gray-600 text-center text-base">
           {t('uploadHandwrittenHomework')}
         </h2>
+        <div className="mt-6 w-full max-w-xl">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="uploadType">
+            {t('selectUploadType')}
+          </label>
+          <div className="flex space-x-4">
+            {uploadTypes.map((type, index) => (
+              <label key={index} className="inline-flex items-center ">
+                <input
+                  type="radio"
+                  name="uploadType"
+                  value={type}
+                  checked={uploadType === type}
+                  onChange={() => setUploadType(type)}
+                  className="form-radio text-purple-600"
+                />
+                <span className="ml-2 ">{t(type)}</span>
+              </label>
+            ))}
+          </div>
+        </div>
         <div className="mt-6 w-full max-w-xl">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">
             {t('selectSubject')}
@@ -144,31 +188,28 @@ const UploadImage = () => {
           <div className="text-center mt-2 text-gray-600">{kindness}%</div>
         </div>
         {loading ? (
-          <MoonLoader className="mt-40 mb-40" size={150} color="#7F56D9" loading={true} />
-        ) : (
-          <div className="flex flex-col justify-center items-center">
-            <div className="mt-6 text-primary-400 text-lg rounded-xl bg-primary-50 px-3 py-2" id="uploaded_number">
-              <span className="font-poppinsSemiBold text-primary-600 text-3xl">{selectedFiles ? selectedFiles.length : 0}</span> / 5
+        <MoonLoader className="mt-40 mb-40" size={150} color="#7F56D9" loading={true} />
+      ) : (
+        <div className="flex flex-col justify-center items-center">
+          {uploadType === "Homework" && (
+            <div className="mt-6 w-full max-w-xl">
+              <UploadGrid onFileChange={handleFileChange} />
             </div>
-            <div className="my-6 flex flex-wrap justify-center items-center" id="upload_image">
-              <label className="cursor-pointer bg-primary-600 text-white font-poppinsSemiBold py-2 px-4 rounded-lg">
-                {t('chooseFiles')}
-                <input
-                  type="file"
-                  className="hidden"
-                  multiple
-                  onChange={handleFileChange}
-                />
-              </label>
+          )}
+          {uploadType === "СОР СОЧ" && (
+            <div className="mt-6 w-full max-w-xl space-y-4">
+              <UploadGrid onFileChange={handleFileChange} index={0} />
+              <UploadGrid onFileChange={handleFileChange} index={1} />
             </div>
-            <div className="h-[200px]">
-              <button
-                className="bg-primary-600 rounded-lg px-11 py-2.5 mt-6 text-white font-poppinsSemiBold text-sm"
-                onClick={handleUpload}
-              >
-                {t('upload')}
-              </button>
-            </div>
+          )}
+          <div className="w-full max-w-xl mt-6">
+            <button
+              className="bg-primary-600 w-full rounded-lg px-11 py-2.5 mt-6 text-white font-poppinsSemiBold text-sm"
+              onClick={handleUpload}
+            >
+              {t('upload')}
+            </button>
+          </div>
             <div className="mt-6 mb-20 text-center" id="examples">
               <span className="font-poppinsSemiBold text-3xl">
                 {t('examples')}:{" "}

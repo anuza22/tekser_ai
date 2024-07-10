@@ -54,7 +54,7 @@ export const LocalImg = {
   EnglishFlag: require("../../assets/img/landing/united-states.png"),
   RussianFlag: require("../../assets/img/landing/russia.png"),
   KazakhFlag: require("../../assets/img/landing/kazakhstan.png"),
-
+  UploadIcon: require('../../assets/img/upload/uploadIcon.png'),
 
 
 
