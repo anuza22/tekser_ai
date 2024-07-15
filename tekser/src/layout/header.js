@@ -22,7 +22,7 @@ const Header = () => {
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
-      setUserData(JSON.parse(user));
+      // setUserData(JSON.parse(user));
       setAuthState(true);
     } else {
       setAuthState(false);
