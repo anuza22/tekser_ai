@@ -23,17 +23,17 @@ const Setting = () => {
   const [userName, setUserName] = useState(store.userData.name);
   const [error, setError] = useState(null);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.map((file) => {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        setImage({ src: e.target.result, file: file });
-        setAvatarState(true);
-      };
-      reader.readAsDataURL(file);
-      return file;
-    });
-  }, []);
+  // const onDrop = useCallback((acceptedFiles) => {
+  //   acceptedFiles.map((file) => {
+  //     const reader = new FileReader();
+  //     reader.onload = function (e) {
+  //       setImage({ src: e.target.result, file: file });
+  //       setAvatarState(true);
+  //     };
+  //     reader.readAsDataURL(file);
+  //     return file;
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (userName === "") {
@@ -125,7 +125,7 @@ const Setting = () => {
               </div>
               <div className="mt-6 flex flex-col md:flex-row" id="upload">
                 <Avatar image={image?.src} size="64px" state={avatarState} />
-                <Dropzone onDrop={onDrop} accept={"image/*"} state={0} />
+                <Dropzone state={0} />
               </div>
               <div className="mt-6 flex flex-col" id="setNotification">
                 <label className="inline-flex relative items-center mr-5 cursor-pointer">

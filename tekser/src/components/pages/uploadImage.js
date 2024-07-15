@@ -7,6 +7,7 @@ import MainLayout from "../../layout/mainLayout";
 import PreviewModal from "../basic/uploadModal";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import UploadGrid from '../basic/uploadGrid';
+import Dropzone from '../basic/dropZone';
 
 const subjects = ["Mathematics", "Physics", "Chemistry", "Biology"];
 const grades = [5, 6, 7, 8, 9, 10, 11, 12];
@@ -193,13 +194,17 @@ const UploadImage = () => {
         <div className="flex flex-col justify-center items-center">
           {uploadType === "Homework" && (
             <div className="mt-6 w-full max-w-xl">
-              <UploadGrid onFileChange={handleFileChange} />
+              {/* <UploadGrid onFileChange={handleFileChange} /> */}
+              <Dropzone onFileChange={handleFileChange} />
             </div>
           )}
           {uploadType === "СОР СОЧ" && (
-            <div className="mt-6 w-full max-w-xl space-y-4">
-              <UploadGrid onFileChange={handleFileChange} index={0} />
-              <UploadGrid onFileChange={handleFileChange} index={1} />
+            <div className="mt-6 w-full max-w-xl flex flex-wrap space-x-4">
+              {/* <UploadGrid onFileChange={handleFileChange} index={0} />
+              <UploadGrid onFileChange={handleFileChange} index={1} /> */}
+               <Dropzone onFileChange={handleFileChange} state={1}  />
+               <Dropzone onFileChange={handleFileChange} state={1}  />
+
             </div>
           )}
           <div className="w-full max-w-xl mt-6">

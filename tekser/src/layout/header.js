@@ -18,8 +18,8 @@ function classNames(...classes) {
 }
 
 const Header = () => {
-  const [navbarOpen, setNavbarOpen] = useState(false);
-  const [authState, setAuthState] = useState(false);
+  const [navbarOpen, setNavbarOpen] = useState(true);
+  const [authState, setAuthState] = useState(true);
 
   const store = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Header = () => {
     if (Object.keys(store.userData).length) {
       setAuthState(true);
     } else {
-      setAuthState(false);
+      setAuthState(true);
     }
   }, [store.userData, dispatch]);
 
@@ -45,18 +45,14 @@ const Header = () => {
     navigate("/setting");
   };
 
-  const myHomework = () => {
-    navigate("/homeworks");
-    setNavbarOpen(false);
+  const myClasses = () => {
+    navigate("/myclasses");
+    setNavbarOpen(true);
   };
 
   const settingClick = () => {
-    setNavbarOpen(false);
+    setNavbarOpen(true);
     navigate("/setting");
-  };
-
-  const onSignOut = () => {
-    dispatch(handleSignOut());
   };
 
   return (
@@ -75,11 +71,11 @@ const Header = () => {
           </div>
           <div className={"flex items-center justify-between w-auto"} id="mobile menu">
             <ul className="flex justify-center items-center p-4 border-gray-100 rounded-lg w-full flex-row md:space-x-8 space-x-3 xs:space-x-6 mt-0 text-sm font-medium border-0">
-              {authState ? (
+            
                 <>
-                  <li className="md:flex text-base font-poppinsSemiBold hidden ml-2 text-gray-700 active:text-gray-900 hover:text-gray-900 active:bg-primary-100 rounded-lg px-3 py-2">
-                    <Link to="/homeworks" className="pr-2">
-                      Homeworks
+                  <li className="md:flex text-base font-poppinsSemiBold hidden ml-2 text-gray-700 active:text-purple-700 hover:text-purple-700 active:bg-primary-100 rounded-lg px-3 py-2">
+                    <Link to="/myclasses" className="pr-2">
+                      My Classes
                     </Link>
                   </li>
                   <li>
@@ -99,13 +95,13 @@ const Header = () => {
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
                         <Menu.Button className="block h-10 w-10">
-                          {store.userData.avatarImageUrl ? (
-                            <img
+                          {/* store.userData.avatarImageUrl  */}
+                            {/* <img
                               alt="avatar"
                               src={store.userData.avatarImageUrl}
                               className="rounded-full w-10 h-10"
-                            />
-                          ) : (
+                            /> */}
+                          
                             <div className="relative">
                               <span className="absolute text-white uppercase font-poppinsBold text-lg top-1.5 left-3.5">{store.userData?.name?.[0]}</span>
                               <img
@@ -114,7 +110,7 @@ const Header = () => {
                                 className="rounded-full w-10 h-10"
                               />
                             </div>
-                          )}
+                          
                         </Menu.Button>
                       </div>
 
@@ -126,7 +122,7 @@ const Header = () => {
                         leave="transition ease-in duration-75"
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
-                      >
+                      > 
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <div className="py-1">
                             <Menu.Item>
@@ -142,7 +138,7 @@ const Header = () => {
                                 </Link>
                               )}
                             </Menu.Item>
-                            <Menu.Item>
+                            {/* <Menu.Item>
                               {({ active }) => (
                                 <button
                                   className={classNames(
@@ -154,28 +150,28 @@ const Header = () => {
                                   Sign out
                                 </button>
                               )}
-                            </Menu.Item>
+                            </Menu.Item> */}
                           </div>
                         </Menu.Items>
                       </Transition>
                     </Menu>
                   </li>
                 </>
-              ) : (
-                // <li>
-                //   <button
-                //     className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
-                //     onClick={LoginHandle}
-                //   >
-                //     Log In
-                //   </button>
-                // </li>
-                
-                  <li>
-                    <LanguageSelector />
-                  </li>
-                
-              )}
+              
+                <div className="flex space-x-4">
+                <li>
+                  <LanguageSelector />
+                </li>
+                <li>
+                  <button
+                    className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
+                    onClick={LoginHandle}
+                  >
+                    Log In
+                  </button>
+                </li>
+              </div>
+              
               <li>
                 <button
                   className="cursor-pointer text-xl leading-none py-1 border border-solid border-transparent rounded bg-transparent block md:hidden outline-none focus:outline-none"
@@ -192,27 +188,8 @@ const Header = () => {
             </ul>
           </div>
         </div>
-        <div
-          className={
-            "flex-col justify-center px-4 font-poppinsSemiBold " +
-            (navbarOpen ? "flex" : "hidden")
-          }
-          id="menu"
-        >
-          <div
-            className="py-9 border-b cursor-pointer hover:text-primary-600"
-            onClick={myHomework}
-          >
-            Homeworks
-          </div>
-          <div
-            className="py-9 flex items-center cursor-pointer hover:text-primary-600"
-            onClick={settingClick}
-          >
-            <Cog8ToothIcon className="w-5 h-5 stroke-2 mr-2" />
-            Settings
-          </div>
-        </div>
+    
+        
       </nav>
     </>
   );
