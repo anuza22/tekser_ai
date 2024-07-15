@@ -18,7 +18,7 @@ const Login = () => {
       const response = await axios.post('https://aisun-production.up.railway.app/api/v1/login', { kundelikLogin: login, kundelikPassword: password });
       const { user, token } = response.data;
 
-      // Store the token and user info in localStorage or context
+      // Store the token and user info in localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 

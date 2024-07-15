@@ -1,38 +1,34 @@
 import { Fragment, useEffect, useState } from "react";
 import {
   Bars3Icon,
-  // BellIcon,
   Cog8ToothIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { LocalImg } from "../components/basic/imgProvider";
-import { useDispatch, useSelector } from "react-redux";
 import { Menu, Transition } from "@headlessui/react";
-import { handleSignOut } from "../redux/user/user";
 import LanguageSelector from '../components/basic/languageSelector';
-
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const Header = () => {
-  const [navbarOpen, setNavbarOpen] = useState(true);
-  const [authState, setAuthState] = useState(true);
-
-  const store = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const [navbarOpen, setNavbarOpen] = useState(false);
+  const [authState, setAuthState] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (Object.keys(store.userData).length) {
+    const user = localStorage.getItem('user');
+    if (user) {
+      setUserData(JSON.parse(user));
       setAuthState(true);
     } else {
-      setAuthState(true);
+      setAuthState(false);
     }
-  }, [store.userData, dispatch]);
+  }, []);
 
-  const navigate = useNavigate();
   const LoginHandle = () => {
     navigate("/login");
   };
@@ -51,8 +47,15 @@ const Header = () => {
   };
 
   const settingClick = () => {
-    setNavbarOpen(true);
+    setNavbarOpen(false);
     navigate("/setting");
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setAuthState(false);
+    navigate("/login");
   };
 
   return (
@@ -71,7 +74,7 @@ const Header = () => {
           </div>
           <div className={"flex items-center justify-between w-auto"} id="mobile menu">
             <ul className="flex justify-center items-center p-4 border-gray-100 rounded-lg w-full flex-row md:space-x-8 space-x-3 xs:space-x-6 mt-0 text-sm font-medium border-0">
-            
+              {authState ? (
                 <>
                   <li className="md:flex text-base font-poppinsSemiBold hidden ml-2 text-gray-700 active:text-purple-700 hover:text-purple-700 active:bg-primary-100 rounded-lg px-3 py-2">
                     <Link to="/myclasses" className="pr-2">
@@ -95,25 +98,16 @@ const Header = () => {
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
                         <Menu.Button className="block h-10 w-10">
-                          {/* store.userData.avatarImageUrl  */}
-                            {/* <img
+                          <div className="relative">
+                            <span className="absolute text-white uppercase font-poppinsBold text-lg top-1.5 left-3.5">{userData?.name?.[0]}</span>
+                            <img
                               alt="avatar"
-                              src={store.userData.avatarImageUrl}
+                              src={LocalImg.avatarPlaceholder}
                               className="rounded-full w-10 h-10"
-                            /> */}
-                          
-                            <div className="relative">
-                              <span className="absolute text-white uppercase font-poppinsBold text-lg top-1.5 left-3.5">{store.userData?.name?.[0]}</span>
-                              <img
-                                alt="avatar"
-                                src={LocalImg.avatarPlaceholder}
-                                className="rounded-full w-10 h-10"
-                              />
-                            </div>
-                          
+                            />
+                          </div>
                         </Menu.Button>
                       </div>
-
                       <Transition
                         as={Fragment}
                         enter="transition ease-out duration-100"
@@ -122,7 +116,7 @@ const Header = () => {
                         leave="transition ease-in duration-75"
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
-                      > 
+                      >
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <div className="py-1">
                             <Menu.Item>
@@ -138,40 +132,40 @@ const Header = () => {
                                 </Link>
                               )}
                             </Menu.Item>
-                            {/* <Menu.Item>
+                            <Menu.Item>
                               {({ active }) => (
                                 <button
                                   className={classNames(
                                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                                     "block w-full px-4 py-2 text-left text-sm"
                                   )}
-                                  onClick={onSignOut}
+                                  onClick={handleSignOut}
                                 >
                                   Sign out
                                 </button>
                               )}
-                            </Menu.Item> */}
+                            </Menu.Item>
                           </div>
                         </Menu.Items>
                       </Transition>
                     </Menu>
                   </li>
                 </>
-              
+              ) : (
                 <div className="flex space-x-4">
-                <li>
-                  <LanguageSelector />
-                </li>
-                <li>
-                  <button
-                    className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
-                    onClick={LoginHandle}
-                  >
-                    Log In
-                  </button>
-                </li>
-              </div>
-              
+                  <li>
+                    <LanguageSelector />
+                  </li>
+                  <li>
+                    <button
+                      className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
+                      onClick={LoginHandle}
+                    >
+                      Log In
+                    </button>
+                  </li>
+                </div>
+              )}
               <li>
                 <button
                   className="cursor-pointer text-xl leading-none py-1 border border-solid border-transparent rounded bg-transparent block md:hidden outline-none focus:outline-none"
@@ -188,11 +182,10 @@ const Header = () => {
             </ul>
           </div>
         </div>
-    
-        
       </nav>
     </>
   );
 };
 
 export default Header;
+
