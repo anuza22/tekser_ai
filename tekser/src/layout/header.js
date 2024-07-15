@@ -22,7 +22,7 @@ const Header = () => {
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
-      // setUserData(JSON.parse(user));
+      setUserData(JSON.parse(user));
       setAuthState(true);
     } else {
       setAuthState(false);
@@ -44,11 +44,6 @@ const Header = () => {
   const myClasses = () => {
     navigate("/myclasses");
     setNavbarOpen(true);
-  };
-
-  const settingClick = () => {
-    setNavbarOpen(false);
-    navigate("/setting");
   };
 
   const handleSignOut = () => {
@@ -74,6 +69,9 @@ const Header = () => {
           </div>
           <div className={"flex items-center justify-between w-auto"} id="mobile menu">
             <ul className="flex justify-center items-center p-4 border-gray-100 rounded-lg w-full flex-row md:space-x-8 space-x-3 xs:space-x-6 mt-0 text-sm font-medium border-0">
+              <li>
+                <LanguageSelector />
+              </li>
               {authState ? (
                 <>
                   <li className="md:flex text-base font-poppinsSemiBold hidden ml-2 text-gray-700 active:text-purple-700 hover:text-purple-700 active:bg-primary-100 rounded-lg px-3 py-2">
@@ -152,19 +150,14 @@ const Header = () => {
                   </li>
                 </>
               ) : (
-                <div className="flex space-x-4">
-                  <li>
-                    <LanguageSelector />
-                  </li>
-                  <li>
-                    <button
-                      className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
-                      onClick={LoginHandle}
-                    >
-                      Log In
-                    </button>
-                  </li>
-                </div>
+                <li>
+                  <button
+                    className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
+                    onClick={LoginHandle}
+                  >
+                    Log In
+                  </button>
+                </li>
               )}
               <li>
                 <button
@@ -188,4 +181,3 @@ const Header = () => {
 };
 
 export default Header;
-
