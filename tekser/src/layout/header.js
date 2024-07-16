@@ -59,11 +59,14 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <div className="relative flex justify-between md:w-auto md:static md:block">
             <div className="flex items-center">
+            {/* <div className="flex-1" id="image_group">
+            <img src={LocalImg.HeaderIcon} alt="Group" />
+          </div> */}
               <Link
                 className="text-sm font-bold leading-relaxed contents mr-7 py-2 whitespace-nowrap"
                 to="/"
               >
-                <span className="font-poppins pl-4 2xl:text-[88px] 3xl:text-3xl sm:text-3xl text-xl 2xl:leading-[90px] text-gray-710 lg:mb-0 mb-0 lg:mt-0 sm:mt-0 mt-0">TekserAi</span>
+                <span className="font-poppinsBold pl-[5rem] 2xl:text-[88px] 3xl:text-3xl sm:text-4xl text-xl 2xl:leading-[90px] text-purple-700 lg:mb-0 mb-0 lg:mt-0 sm:mt-0 mt-0">TekserAi</span>
               </Link>
             </div>
           </div>

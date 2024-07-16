@@ -46,5 +46,7 @@
     "chooseOption": "Choose the appropriate option.",
     "chooseDetails": "Don't forget to choose your subject, class, and teacher's level of kindness.",
     "upload": "Upload",
-    "chooseFiles": "Choose Files"
+    "chooseFiles": "Choose Files",
+    "type": "Select upload type"
+
 }

@@ -126,7 +126,7 @@ const images = (step) => {
     case 1:
       return (
         <div className="px-1 flex flex-wrap gap-3 justify-center items-center">
-          <img src={"https://img.freepik.com/free-photo/schoolgirl-desk-with-laptop-memphis-style_23-2148203784.jpg?size=626&ext=jpg&ga=GA1.1.1738361224.1719930066&semt=ais_user"} alt="Bad" className="rounded-lg" />
+          <img src={LocalImg.Guide1} alt="Quality" className="rounded-lg" />
         </div>
       );
     default:

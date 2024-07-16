@@ -40,7 +40,6 @@ export const LocalImg = {
   Joker: require("../../assets/img/landing/Joker.png"),
   Mercenary: require("../../assets/img/landing/Mercenary.png"),
   OilPainting: require("../../assets/img/landing/Oil-Painting.png"),
-  Painting: require("../../assets/img/landing/Painting.png"),
   Pinup: require("../../assets/img/landing/Pinup.png"),
   PrincessWarrior: require("../../assets/img/landing/Princess-Warrior.png"),
   Renaissance: require("../../assets/img/landing/Renaissance.png"),
@@ -55,7 +54,9 @@ export const LocalImg = {
   RussianFlag: require("../../assets/img/landing/russia.png"),
   KazakhFlag: require("../../assets/img/landing/kazakhstan.png"),
   UploadIcon: require('../../assets/img/upload/uploadIcon.png'),
-  KundelikKz: require('../../assets/img/sign/kundelikkz.jpg')
+  KundelikKz: require('../../assets/img/sign/kundelikkz.jpg'),
+  HeaderIcon: require('../../assets/img/landing/tekserai.png'),
+  Guide1: require('../../assets/img/landing/guide1.JPEG')
 
 
 
