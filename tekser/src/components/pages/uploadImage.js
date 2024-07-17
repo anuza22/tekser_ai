@@ -67,6 +67,7 @@ const UploadImage = () => {
       if (selectedFiles.homework) {
         for (let i = 0; i < selectedFiles.homework.length; i++) {
           formData.append('files', selectedFiles.homework[i]);
+          console.log(selectedFiles.homework[i]);
         }
       }
     } else {
@@ -92,6 +93,7 @@ const UploadImage = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log(results.data);
       setResults(response.data);
       await axios.post('https://aisun-production.up.railway.app/api/increment-upload-count');
       const uploadCountResponse = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
