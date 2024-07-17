@@ -93,7 +93,7 @@ const UploadImage = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(results.data);
+      console.log(response.data);
       setResults(response.data);
       await axios.post('https://aisun-production.up.railway.app/api/increment-upload-count');
       const uploadCountResponse = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
