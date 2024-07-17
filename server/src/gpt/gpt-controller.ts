@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import GPTservice from "./gpt-service";
 import { uploadFile } from "../middlewares/s3-middleware";
 import multer from "multer";
+import { Annotation, annotateImage } from "./test";
 
 const upload = multer({ storage: multer.memoryStorage() });
 

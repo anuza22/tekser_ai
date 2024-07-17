@@ -2,12 +2,34 @@ import OpenAI from 'openai';
 import { systemPrompt } from './prompt';
 import { Mark } from './models/types';
 import SearchLinks from '../api/getBrowserData';
+import Jimp from 'jimp';
+import axios from 'axios';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 const DEFAULT_IMAGE_URL = "https://anuza.s3.eu-north-1.amazonaws.com/whitejpeg.jpeg";
+async function annotateImage(imagePath: string, outputPath: string, annotations: { position: { x: number, y: number }, text: string, color: string }[]) {
+  try {
+    const image = await Jimp.read(imagePath);
+    const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
+
+    annotations.forEach(annotation => {
+      const { position, text, color } = annotation;
+      image.print(font, position.x, position.y, {
+        text: text,
+        alignmentX: Jimp.HORIZONTAL_ALIGN_LEFT,
+        alignmentY: Jimp.VERTICAL_ALIGN_TOP
+      });
+    });
+
+    await image.writeAsync(outputPath);
+    console.log(`Annotated image saved to ${outputPath}`);
+  } catch (error) {
+    console.error('Error annotating image:', error);
+  }
+}
 
 class GPTservice {
   async checkHW(imagePaths: string[], subject: string, grade: number, language: string, kidness: number) {
@@ -71,6 +93,26 @@ class GPTservice {
           parsedRes.searchLinks = searchLinks.map(item => item.link);
         }
         console.log(parsedRes.searchLinks);
+
+        const annotations = [
+          ...parsedRes.correct_problems_positions.map((pos: any) => ({ position: pos, text: 'Correct', color: 'green' })),
+          ...parsedRes.wrong_problems_positions.map((pos: any) => ({ position: pos, text: 'Wrong', color: 'red' }))
+        ];
+
+        // Download the image
+        const imageResponse = await axios.get(filledImagePaths[0], { responseType: 'arraybuffer' });
+        const imageBuffer = Buffer.from(imageResponse.data, 'binary');
+        const imagePath = imagePaths[0];
+        const outputPath = './out.jpg';
+
+        // Save the downloaded image
+        await Jimp.read(imageBuffer).then(image => {
+          return image.writeAsync(imagePath);
+        });
+
+        // Annotate the image
+        await annotateImage(imagePath, outputPath, annotations);
+
         return parsedRes;
       } else {
         return null;

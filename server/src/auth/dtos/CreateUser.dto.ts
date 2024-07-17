@@ -1,6 +1,8 @@
 export interface CreateUserDto {
-    username?: string;
-    email: string;
-    password: string;
-  }
-  
+  kundelikLogin: string;
+  kundelikPassword: string;
+  name: string;
+  surname: string;
+  thirdname: string;
+  userType: 'Teacher' | 'Student';
+}

@@ -15,7 +15,7 @@ export async function loginToKundelik(username: string, password: string, retrie
 
     browser = await puppeteer.launch({ headless: false, devtools: true });
     page = await browser.newPage();
-    page.setExtraHTTPHeaders({ referer: randomReferer });
+    page.setExtraHTTPHeaders({ referer: randomReferer,   'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' });
     page.setUserAgent(userAgent);
 
     await page.goto('https://login.kundelik.kz/login', { timeout: 60000 });
@@ -31,6 +31,8 @@ export async function loginToKundelik(username: string, password: string, retrie
     await page.waitForNavigation({ timeout: 60000 });
 
     console.log('Login successful');
+
+    await changeLanguageToRussian(page);
     
     const classes = await getMyClasses();
     console.log('Classes:', classes);
@@ -54,6 +56,26 @@ export async function loginToKundelik(username: string, password: string, retrie
   }
 }
 
+async function changeLanguageToRussian(page: Page) {
+  try {
+    await page.waitForSelector('.dropdown-container', { timeout: 10000 });
+    const links = await page.$$eval('.dropdown-container a', links =>
+      links.map(link => ({
+        href: link.getAttribute('href') ?? '',
+        text: link.textContent?.trim() ?? ''
+      }))
+    );
+    const russianLink = links.find(link => link.text.includes('Русский'));
+    if (russianLink) {
+      await page.goto(russianLink.href, { timeout: 60000 });
+      console.log('Language changed to Russian');
+    } else {
+      console.error('Russian language link not found');
+    }
+  } catch (error) {
+    console.error('Error changing language:', error);
+  }
+}
 export async function getMyClasses(): Promise<{ className: string, classLink: string }[]> {
   if (!page || !browser) {
     throw new Error('You must log in first');

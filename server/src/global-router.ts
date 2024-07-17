@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import authRouter from './auth/auth-router';
+import kundelikAuthRouter from './auth/kundelikAuth-router';
 import eventRouter from './events/event-router';
 import gptRouter from './gpt/gpt-router';
 // other routers can be imported here
@@ -8,7 +8,7 @@ import GPTservice from "./gpt/gpt-service";
 
 const globalRouter = Router();
 
-globalRouter.use(authRouter);
+globalRouter.use(kundelikAuthRouter);
 globalRouter.use(eventRouter);
 globalRouter.use(gptRouter);
 
