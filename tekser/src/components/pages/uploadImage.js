@@ -39,7 +39,8 @@ const UploadImage = () => {
   useEffect(() => {
     const fetchUploadCount = async () => {
       try {
-        const response = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
+        // const response = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
+        const response = await axios.get('http://localhost:6161/api/upload-count');
         setUploadCount(response.data.uploadCount);
       } catch (error) {
         console.error('Error fetching upload count:', error);
@@ -93,10 +94,19 @@ const UploadImage = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
+      // const response = await axios.post('http://localhost:6161/api/v1/marks', formData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // });
       console.log(response.data);
       setResults(response.data);
       await axios.post('https://aisun-production.up.railway.app/api/increment-upload-count');
+      // await axios.post('http://localhost:6161/api/increment-upload-count');
+
       const uploadCountResponse = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
+      // const uploadCountResponse = await axios.get('http://localhost:6161/api/upload-count');
+
       setUploadCount(uploadCountResponse.data.uploadCount);
     } catch (error) {
       console.error('Error uploading files:', error);

@@ -16,6 +16,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('https://aisun-production.up.railway.app/api/v1/login', { kundelikLogin: login, kundelikPassword: password });
+      // const response = await axios.post('http://localhost:6161/api/v1/login', { kundelikLogin: login, kundelikPassword: password });
       const { user, token } = response.data;
 
       // Store the token and user info in localStorage

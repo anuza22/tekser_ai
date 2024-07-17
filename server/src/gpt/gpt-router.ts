@@ -10,6 +10,6 @@ const gptRouter = Router();
 const gptService = new GptService();
 const gptController = new GptController(gptService);
 
-gptRouter.post('/marks/', upload.array('files', 5), gptController.checkHW);
+gptRouter.post('/marks', upload.array('files', 5), gptController.checkHW);
 
 export default gptRouter;

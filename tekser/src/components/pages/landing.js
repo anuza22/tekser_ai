@@ -19,6 +19,8 @@ const Landing = () => {
     const fetchUploadCount = async () => {
       try {
         const response = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
+        // const response = await axios.get('http://localhost:6161/api/upload-count');
+
         setUploadCount(response.data.uploadCount);
       } catch (error) {
         console.error('Error fetching upload count:', error);

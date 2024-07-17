@@ -1,33 +1,183 @@
+// import OpenAI from 'openai';
+// import { systemPrompt } from './prompt';
+// import { Mark } from './models/types';
+// import SearchLinks from '../api/getBrowserData';
+// import Jimp from 'jimp';
+// import axios from 'axios';
+// import { uploadFile } from '../middlewares/s3-middleware';
+
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
+
+// const DEFAULT_IMAGE_URL = "https://anuza.s3.eu-north-1.amazonaws.com/whitejpeg.jpeg";
+// async function annotateImage(imagePath: string, outputPath: string, annotations: { position: { x: number, y: number }, text: string, color: string }[]) {
+//   try {
+//     const image = await Jimp.read(imagePath);
+//     const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
+
+//     annotations.forEach(annotation => {
+//       const { position, text, color } = annotation;
+//       image.print(font, position.x, position.y, {
+//         text: text,
+//         alignmentX: Jimp.HORIZONTAL_ALIGN_LEFT,
+//         alignmentY: Jimp.VERTICAL_ALIGN_TOP
+//       });
+//     });
+
+//     await image.writeAsync(outputPath);
+//     console.log(`Annotated image saved to ${outputPath}`);
+//   } catch (error) {
+//     console.error('Error annotating image:', error);
+//   }
+// }
+
+// class GPTservice {
+//   async checkHW(imagePaths: string[], subject: string, grade: number, language: string, kidness: number) {
+//     console.log(imagePaths);
+//     try {
+//       // Ensure there are exactly 5 image URLs
+//       const filledImagePaths = [...imagePaths];
+//       while (filledImagePaths.length < 6) {
+//         filledImagePaths.push(DEFAULT_IMAGE_URL);
+//       }
+
+//       console.log(filledImagePaths);
+
+//       const prompt = systemPrompt
+//         .replace('{subject}', subject)
+//         .replace('{language}', language)
+//         .replace('{grade}', `${grade}`)
+//         .replace('{kidness}', `${kidness}`);
+
+//       const response = await openai.chat.completions.create({
+//         model: "gpt-4o",
+//         response_format: {
+//           type: 'json_object'
+//         },
+//         messages: [{
+//           role: "user",
+//           content: [
+//             { type: "text", text: prompt },
+//             {
+//               type: "image_url",
+//               image_url: { "url": filledImagePaths[1]},
+//             },
+//             {
+//               type: "image_url",
+//               image_url: { "url": filledImagePaths[2]},
+//             },
+//             {
+//               type: "image_url",
+//               image_url: { "url": filledImagePaths[3] },
+//             },
+//             {
+//               type: "image_url",
+//               image_url: { "url": filledImagePaths[4] },
+//             },
+//             {
+//               type: "image_url",
+//               image_url: { "url": filledImagePaths[5] },
+//             }
+//           ],
+//         }]
+//       });
+
+//       console.log(response.choices);
+//       const resContent = response.choices[0].message.content;
+
+//       if (resContent) {
+//         const parsedRes = JSON.parse(resContent);
+//         console.log(parsedRes);
+//         if (parsedRes.google_search_query) {
+//           const searchLinks = await SearchLinks(parsedRes.google_search_query);
+//           parsedRes.searchLinks = searchLinks.map(item => item.link);
+//         }
+//         console.log(parsedRes.searchLinks);
+
+//         // const annotations = [
+//         //   ...parsedRes.correct_problems_positions.map((pos: any) => ({ position: pos, text: 'Correct', color: 'green' })),
+//         //   ...parsedRes.wrong_problems_positions.map((pos: any) => ({ position: pos, text: 'Wrong', color: 'red' }))
+//         // ];
+
+//         // // Download the image
+//         // const imageResponse = await axios.get(filledImagePaths[0], { responseType: 'arraybuffer' });
+//         // const imageBuffer = Buffer.from(imageResponse.data, 'binary');
+//         // const imagePath = imagePaths[0];
+//         // const outputPath = await uploadFile(process.env.AWS_S3_BUCKET_NAME!, 'originalname', imagePath);
+
+//         // Save the downloaded image
+//         // await Jimp.read(imageBuffer).then(image => {
+//         //   return image.writeAsync(imagePath);
+//         // });
+
+//         // Annotate the image
+//         // try{await annotateImage(imagePath, outputPath, annotations);}
+//         // catch (e){
+//         //   console.error(e);
+//         // }
+
+//         console.log(parsedRes.data);
+
+//         return parsedRes;
+//       } else {
+//         return null;
+//       }
+//     } catch (error: any) {
+//       console.log(error.message);
+//       return null;
+//     }
+//   }
+// }
+
+// export default GPTservice;
 import OpenAI from 'openai';
 import { systemPrompt } from './prompt';
 import { Mark } from './models/types';
 import SearchLinks from '../api/getBrowserData';
 import Jimp from 'jimp';
 import axios from 'axios';
+import { uploadFile } from '../middlewares/s3-middleware';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 const DEFAULT_IMAGE_URL = "https://anuza.s3.eu-north-1.amazonaws.com/whitejpeg.jpeg";
-async function annotateImage(imagePath: string, outputPath: string, annotations: { position: { x: number, y: number }, text: string, color: string }[]) {
+
+async function annotateImageInMemory(imageUrl: string, correctPositions: { x: number, y: number }[], wrongPositions: { x: number, y: number }[]): Promise<Buffer> {
   try {
-    const image = await Jimp.read(imagePath);
+    // Загрузка изображения из URL
+    const imageResponse = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    const imageBuffer = Buffer.from(imageResponse.data, 'binary');
+    const image = await Jimp.read(imageBuffer);
+
     const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
 
-    annotations.forEach(annotation => {
-      const { position, text, color } = annotation;
-      image.print(font, position.x, position.y, {
-        text: text,
-        alignmentX: Jimp.HORIZONTAL_ALIGN_LEFT,
-        alignmentY: Jimp.VERTICAL_ALIGN_TOP
+    // Аннотируем правильные позиции
+    correctPositions.forEach(position => {
+      image.print(font, position.x, position.y, 'Correct', Jimp.HORIZONTAL_ALIGN_LEFT, Jimp.VERTICAL_ALIGN_TOP);
+      image.scan(position.x - 10, position.y - 10, 20, 20, function (x, y, idx) {
+        this.bitmap.data[idx + 0] = 0;   // красный
+        this.bitmap.data[idx + 1] = 255; // зеленый
+        this.bitmap.data[idx + 2] = 0;   // синий
       });
     });
 
-    await image.writeAsync(outputPath);
-    console.log(`Annotated image saved to ${outputPath}`);
+    // Аннотируем неправильные позиции
+    wrongPositions.forEach(position => {
+      image.print(font, position.x, position.y, 'Wrong', Jimp.HORIZONTAL_ALIGN_LEFT, Jimp.VERTICAL_ALIGN_TOP);
+      image.scan(position.x - 10, position.y - 10, 20, 20, function (x, y, idx) {
+        this.bitmap.data[idx + 0] = 255; // красный
+        this.bitmap.data[idx + 1] = 0;   // зеленый
+        this.bitmap.data[idx + 2] = 0;   // синий
+      });
+    });
+
+    return await image.getBufferAsync(Jimp.MIME_JPEG);
   } catch (error) {
     console.error('Error annotating image:', error);
+    throw error;
   }
 }
 
@@ -82,7 +232,7 @@ class GPTservice {
         }]
       });
 
-      // console.log(response.choices);
+      console.log(response.choices);
       const resContent = response.choices[0].message.content;
 
       if (resContent) {
@@ -94,24 +244,18 @@ class GPTservice {
         }
         console.log(parsedRes.searchLinks);
 
-        const annotations = [
-          ...parsedRes.correct_problems_positions.map((pos: any) => ({ position: pos, text: 'Correct', color: 'green' })),
-          ...parsedRes.wrong_problems_positions.map((pos: any) => ({ position: pos, text: 'Wrong', color: 'red' }))
-        ];
+        // Аннотируем изображение в памяти
+        const annotatedImageBuffer = await annotateImageInMemory(
+          filledImagePaths[1],
+          parsedRes.correct_problems_positions,
+          parsedRes.wrong_problems_positions
+        );
 
-        // Download the image
-        const imageResponse = await axios.get(filledImagePaths[0], { responseType: 'arraybuffer' });
-        const imageBuffer = Buffer.from(imageResponse.data, 'binary');
-        const imagePath = imagePaths[0];
-        const outputPath = './out.jpg';
+        // Загружаем аннотированное изображение в S3
+        const annotatedImageUrl = await uploadFile(process.env.AWS_S3_BUCKET_NAME!, 'annotated_image.jpg', annotatedImageBuffer);
+        console.log(`Annotated image URL: ${annotatedImageUrl}`);
 
-        // Save the downloaded image
-        await Jimp.read(imageBuffer).then(image => {
-          return image.writeAsync(imagePath);
-        });
-
-        // Annotate the image
-        await annotateImage(imagePath, outputPath, annotations);
+        parsedRes.annotatedImageUrl = annotatedImageUrl;
 
         return parsedRes;
       } else {
