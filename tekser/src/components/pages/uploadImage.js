@@ -99,16 +99,16 @@ const UploadImage = () => {
 
     setLoading(true);
     try {
-      // const response = await axios.post('https://aisun-production.up.railway.app/api/v1/marks', formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
-      const response = await axios.post('http://localhost:6161/api/v1/marks', formData, {
+      const response = await axios.post('https://aisun-production.up.railway.app/api/v1/marks', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      // const response = await axios.post('http://localhost:6161/api/v1/marks', formData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // });
       console.log(response.data);
       setResults(response.data);
       await axios.post('https://aisun-production.up.railway.app/api/increment-upload-count');
