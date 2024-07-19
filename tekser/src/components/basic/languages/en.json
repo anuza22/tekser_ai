@@ -47,6 +47,10 @@
     "chooseDetails": "Don't forget to choose your subject, class, and teacher's level of kindness.",
     "upload": "Upload",
     "chooseFiles": "Choose Files",
-    "type": "Select upload type"
+    "type": "Select upload type", 
+    "Click_upload": "Click to Upload",
+    "drop_the_images_here": "drop the images here",
+    "or_drag_and_drop": "or drag and drop",
+    "PNG_or_JPG": "PNG or JPG"
 
 }

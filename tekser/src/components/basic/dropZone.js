@@ -1,5 +1,6 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
+import { useTranslation } from "react-i18next";
 
 function Dropzone({ state, onFileChange }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -8,8 +9,7 @@ function Dropzone({ state, onFileChange }) {
     },
   });
 
-  const text = state === 1 ? "Загрузите сам листок СОР СОЧ" : "Загрузите работу ученика";
-
+  const {t} = useTranslation();
   return (
     <div className={state === 1 ? "" : "w-full"}>
       <div
@@ -35,14 +35,13 @@ function Dropzone({ state, onFileChange }) {
               />
             </svg>
           </div>
-          <span className="mt-3">Click to upload</span>
+          <span className="mt-3">{t('Click_upload')}</span>
           {isDragActive ? (
-            <p className="text-gray-600 text-sm leading-5 my-1">drop the images here</p>
+            <p className="text-gray-600 text-sm leading-5 my-1">{t('drop_the_images_here')}</p>
           ) : (
-            <p className="text-gray-600 text-sm leading-5 my-1">or drag and drop</p>
+            <p className="text-gray-600 text-sm leading-5 my-1">{t('or_drag_and_drop')}</p>
           )}
-          <span className="text-purple-500 mt-2">{text}</span>
-          <p className="text-gray-600 text-xs">PNG or JPG</p>
+          <p className="text-gray-600 text-xs">{t('PNG_or_JPG')}</p>
         </div>
       </div>
     </div>

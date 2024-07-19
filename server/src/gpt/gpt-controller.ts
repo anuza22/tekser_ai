@@ -57,6 +57,9 @@ import { Request, Response } from "express";
 import GPTservice from "./gpt-service";
 import { uploadFile } from "../middlewares/s3-middleware";
 import multer from "multer";
+import axios from "axios";
+const pythonBackendUrl = 'http://localhost:5001/process-image';  // Python backend URL
+
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -68,7 +71,7 @@ class GptController {
   }
 
   checkHW = async (req: Request, res: Response) => {
-    const { subject, grade, language, kidness } = req.body;
+    const { subject, grade, language, kidness, maxScore } = req.body;
 
     // Проверяем, что в запросе есть файлы
     if (!req.files || (req.files as Express.Multer.File[]).length === 0) {
@@ -96,7 +99,7 @@ class GptController {
       }
 
       // Вызываем ваш сервис для обработки файлов и других параметров
-      const response = await this.userService.checkHW(uploadedFileLinks, subject, grade, language, kidness );
+      const response = await this.userService.checkHW(uploadedFileLinks, subject, grade, language, kidness, maxScore );
       console.log(response);
 
       res.status(200).json(response);
