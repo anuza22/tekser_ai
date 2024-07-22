@@ -78,26 +78,27 @@ class GPTservice {
             { type: "text", text: prompt },
             {
               type: "image_url",
-              image_url: { "url": filledImagePaths[1]},
+              image_url: { "url": filledImagePaths[1],  "detail": "auto"},
             },
             {
               type: "image_url",
-              image_url: { "url": filledImagePaths[2]},
+              image_url: { "url": filledImagePaths[2],  "detail": "auto"},
             },
             {
               type: "image_url",
-              image_url: { "url": filledImagePaths[3] },
+              image_url: { "url": filledImagePaths[3],  "detail": "auto" },
             },
             {
               type: "image_url",
-              image_url: { "url": filledImagePaths[4] },
+              image_url: { "url": filledImagePaths[4],  "detail": "auto" },
             },
             {
               type: "image_url",
-              image_url: { "url": filledImagePaths[5] },
+              image_url: { "url": filledImagePaths[5],  "detail": "auto" },
             }
           ],
-        }]
+        }],
+        temperature: 0.3
       });
 
       console.log(response.choices);

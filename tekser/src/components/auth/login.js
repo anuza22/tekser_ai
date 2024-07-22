@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { loginUser } from '../../redux/authSlice';
 import LeftSide from '../../layout/authLeft';
 import { useTranslation } from 'react-i18next';
 import { LocalImg } from '../basic/imgProvider';
@@ -9,23 +10,15 @@ const Login = () => {
   const { t } = useTranslation();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const dispatch = useDispatch();
+  const { error } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // const response = await axios.post('https://aisun-production.up.railway.app/api/v1/login', { kundelikLogin: login, kundelikPassword: password });
-      const response = await axios.post('http://localhost:6161/api/v1/login', { kundelikLogin: login, kundelikPassword: password });
-      const { user, token } = response.data;
-
-      // Store the token and user info in localStorage
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-
-      navigate('/');
-    } catch (err) {
-      setError('Login or password is incorrect');
+    const action = await dispatch(loginUser({ login, password }));
+    if (action.type === loginUser.fulfilled.type) {
+      navigate('/profile');
     }
   };
 
@@ -85,3 +78,4 @@ const Login = () => {
 };
 
 export default Login;
+

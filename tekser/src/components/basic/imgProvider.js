@@ -56,8 +56,9 @@ export const LocalImg = {
   UploadIcon: require('../../assets/img/upload/uploadIcon.png'),
   KundelikKz: require('../../assets/img/sign/kundelikkz.jpg'),
   HeaderIcon: require('../../assets/img/landing/tekserai.png'),
-  Guide1: require('../../assets/img/landing/guide1.JPEG')
-
-
+  Guide1: require('../../assets/img/landing/guide1.JPEG'),
+  Chemistry: require('../../assets/examples/chemistry.jpg'),
+  Physic: require('../../assets/examples/physic.jpeg'),
+  Math: require('../../assets/examples/math.png'),
 
 };

@@ -5,22 +5,19 @@ import Avatar from "../basic/avatar";
 import { LocalImg } from "../basic/imgProvider";
 import MyModal from "../basic/modal";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, updateUserInfo } from "../../redux/user/user";
 
 const Setting = () => {
   const store = useSelector((state) => state.auth);
 
-  const dispatch = useDispatch();
-
   const [notification, setNotification] = useState(
-    store.userData.receiveEmailNotificationEnabled
+    // store.userData.receiveEmailNotificationEnabled
   );
   const [promotionalEmail, setPromotionalEmail] = useState(
-    store.userData.receivePromotionalEmailEnabled
+    // store.userData.receivePromotionalEmailEnabled
   );
-  const [image, setImage] = useState({ src: store.userData.avatarImageUrl });
-  const [avatarState, setAvatarState] = useState(store.userData.avatarImageUrl);
-  const [userName, setUserName] = useState(store.userData.name);
+  const [image, setImage] = useState(null);
+  const [avatarState, setAvatarState] = useState(null);
+  const [userName, setUserName] = useState(null);
   const [error, setError] = useState(null);
 
   // const onDrop = useCallback((acceptedFiles) => {
@@ -45,20 +42,20 @@ const Setting = () => {
 
   const SaveChange = (e) => {
     e.preventDefault();
-    if (!error) {
-      dispatch(
-        updateUserInfo({
-          username: userName,
-          avatar: image?.file ? image.file : null,
-          emailNotificationState: notification,
-          promotionalEmailState: promotionalEmail,
-        })
-      );
-    }
+    // if (!error) {
+    //   dispatch(
+    //     updateUserInfo({
+    //       username: userName,
+    //       avatar: image?.file ? image.file : null,
+    //       emailNotificationState: notification,
+    //       promotionalEmailState: promotionalEmail,
+    //     })
+    //   );
+    // }
   };
 
   const CancelChange = () => {
-    dispatch(getUser());
+    // dispatch(getUser());
   };
 
   return (
@@ -70,23 +67,21 @@ const Setting = () => {
             src={LocalImg.settingHeader}
             className="absolute h-60 rounded-3xl w-full object-cover"
           />
-          {store.userData.avatarImageUrl ? (
+          
             <img
               alt="current avatar"
-              src={store.userData.avatarImageUrl}
+              // src={store.userData.avatarImageUrl}
               className="rounded-full md:w-40 md:h-40 ml-6 z-10 w-20 h-20 border-white border-[3px]"
             />
-          ) : (
             <img
               alt="current avatar"
               src={LocalImg.avatarPlaceholder_1}
               className="rounded-full md:w-40 md:h-40 ml-6 z-10 w-20 h-20"
             />
-          )}
 
           <div className="flex flex-col ml-6 z-10">
-            <p className="text-2xl sm:text-3xl text-white">{store.userData.name}</p>
-            <span className="text-sm sm:text-base text-white">{store.userData.email}</span>
+            {/* <p className="text-2xl sm:text-3xl text-white">{store.userData.name}</p> */}
+            {/* <span className="text-sm sm:text-base text-white">{store.userData.email}</span> */}
           </div>
         </div>
         <div

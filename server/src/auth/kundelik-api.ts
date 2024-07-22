@@ -17,8 +17,11 @@ class KunBase {
     this.token = token || null;
     if (!this.token && login && password) {
 
-      this.initialize(login, password);
-      console.log("not initialized here35")
+      this.initialize(login, password).then(() => {
+        console.log("Initialization complete");
+      }).catch(error => {
+        console.error("Initialization failed:", error);
+      });
     } else {
       this.session = this.createAxiosInstance(this.token);
     }
@@ -121,20 +124,27 @@ class KunAPI extends KunBase {
     super(login, password, token);
   }
 
+
+  // Информация про школу где учишься и работаешь
   async getSchool() {
     return await this.get('schools/person-schools');
   }
-
+  
+  // Инфо про себя
   async getInfo() {
     return await this.get('users/me');
   }
-
+  // Список одноклассников или коллег
   async getClassmates() {
     return await this.get('users/me/classmates');
   }
 
   async getContext() {
     return await this.get('users/me/context');
+  }
+
+  async getUserContext(userId: number) {
+    return await this.get(`users/${userId}/context`);
   }
 
   async getOrganizations() {
@@ -145,9 +155,7 @@ class KunAPI extends KunBase {
     return await this.get(`users/me/organizations/${organizationId}`);
   }
 
-  async getUserContext(userId: number) {
-    return await this.get(`users/${userId}/context`);
-  }
+ 
 
   async getUserMemberships(userId: number) {
     return await this.get(`users/${userId}/school-memberships`);

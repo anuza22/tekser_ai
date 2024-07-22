@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import MainLayout from "../../layout/mainLayout";
-import { contactUs } from "../../redux/user/user";
+// import { contactUs } from "../../redux/user/user";
 
 const Contact = () => {
   const [firstName, setFirstName] = useState("");
@@ -44,7 +44,7 @@ const Contact = () => {
         lastName: lastName,
         message: message,
       };
-      dispatch(contactUs(data));
+      // dispatch(contactUs(data));
       setMessage("");
     }
   }, [error, dispatch, email, firstName, lastName, message]);

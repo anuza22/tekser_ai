@@ -40,8 +40,8 @@ app.post('/api/increment-upload-count', (req, res) => {
 
 // CORS setup
 const corsOptions = {
-    origin: 'https://aisun-vy43.vercel.app', // URL вашего фронтенда
-    // origin: "http://localhost:3000",
+    // origin: 'https://aisun-vy43.vercel.app', // URL вашего фронтенда
+    origin: "http://localhost:3000",
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
@@ -80,28 +80,48 @@ app.listen(PORT, () => {
 //     const eduGroups = await api.getEduGroups();
 //     console.log("edu Groups:", eduGroups);
 
-//     const myClassmates = await api.getClassmates();
-//     console.log('My Classmates: ' , myClassmates);
+    // for (const group of eduGroups){
 
-//     const context = await api.getContext();
-//     console.log('context:', context);
+    //   const students = await api.getGroupsPupils(group.id)
+    //   console.log(`Students in group ${group.name}:`, students);
 
-//     const myClasses = await api.getEduGroups();
-//     console.log(myClasses);
+    //   // Fetch lesson logs and marks for each group and subject
+    //   const startTime = new Date('2023-01-01');
+    //   const endTime = new Date('2023-12-31');
+
+    //   const groupSubjects = await api.getGroupSubjects(group.id);
+    //   for (const subject of groupSubjects) {
+    //     const lessonLog = await api.getGroupLessonLog(group.id, subject.id, startTime, endTime);
+    //     console.log(`Lesson Log for subject ${subject.name}:`, lessonLog);
+
+    //     const groupMarks = await api.getGroupSubjectMarks(group.id, subject.id, startTime, endTime);
+    //     console.log(`Group Marks for subject ${subject.name}:`, groupMarks);
+    //   }
+      
+    // }
+
+    // const myClassmates = await api.getClassmates();
+    // console.log('My Classmates: ' , myClassmates);
+
+    // const context = await api.getContext();
+    // console.log('context:', context);
+
+    // const myClasses = await api.getEduGroups();
+    // console.log(myClasses);
 
     
-//     // const organizations = api.getOrganizations();
-//     // console.log("Organosation", organizations);
+    // const organizations = api.getOrganizations();
+    // console.log("Organosation", organizations);
 
-//     // console.log('OrganisationInfo', api.getOrganizationInfo(organizations[0]));
+    // console.log('OrganisationInfo', api.getOrganizationInfo(organizations[0]));
 
-//     // console.log('User Context: ', await api.getSchools());
+    // console.log('User Context: ', await api.getSchools());
 
-//     // const userEduGroups = await api.getUserEduGroups(1000013590798);
-//     // console.log('userEduGroups', userEduGroups);
+    // const userEduGroups = await api.getUserEduGroups(1000013590798);
+    // console.log('userEduGroups', userEduGroups);
 
-//     // const pupils = await api.getStudentsGroupsList();
-//     // console.log("groupPupils", pupils);
+    // const pupils = await api.getStudentsGroupsList();
+    // console.log("groupPupils", pupils);
 
 
 

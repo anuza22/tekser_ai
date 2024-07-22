@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
-import { MoonLoader } from "react-spinners";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
+import { MoonLoader } from 'react-spinners';
 
 export const PrivateRoute = ({ children }) => {
   const { isLoading, isAuthenticate } = useSelector((state) => state.auth);
-  // const { productLoading } = useSelector((state) => state.product);
 
   if (isLoading)
     return (
