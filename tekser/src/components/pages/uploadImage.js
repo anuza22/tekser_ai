@@ -587,17 +587,17 @@ const UploadImage = () => {
     {
       src: 'https://anuza.s3.eu-north-1.amazonaws.com/Physic.png',
       description: 'Physic Homework',
-      downloadLink: 'https://anuza.s3.eu-north-1.amazonaws.com/Physic.png',
+      downloadLink: LocalImg.Physic,
     },
     {
       src: 'https://anuza.s3.eu-north-1.amazonaws.com/Mathematic.png',
       description: 'Mathematic Homework',
-      downloadLink: 'https://anuza.s3.eu-north-1.amazonaws.com/Mathematic.png'
+      downloadLink: LocalImg.Math
     },
     {
       src: 'https://anuza.s3.eu-north-1.amazonaws.com/chemistry.jpg',
       description: 'Chemistry Homework',
-      downloadLink: 'https://anuza.s3.eu-north-1.amazonaws.com/chemistry.jpg'
+      downloadLink: LocalImg.Chemistry
     }
   ];
 
