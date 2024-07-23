@@ -12,7 +12,7 @@ const parseJSON = (item) => {
 export const loginUser = createAsyncThunk('auth/loginUser', async ({ login, password }, thunkAPI) => {
   try {
     // Отправка запроса на авторизацию
-    const response = await axios.post('http://localhost:6161/api/v1/login', { kundelikLogin: login, kundelikPassword: password });
+    const response = await axios.post('https://aisun-production.up.railway.app/api/v1/login', { kundelikLogin: login, kundelikPassword: password });
     const { user, token } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
