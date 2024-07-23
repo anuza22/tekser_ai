@@ -11,11 +11,20 @@ const parseJSON = (item) => {
 
 export const loginUser = createAsyncThunk('auth/loginUser', async ({ login, password }, thunkAPI) => {
   try {
+    // Отправка запроса на авторизацию
     const response = await axios.post('http://localhost:6161/api/v1/login', { kundelikLogin: login, kundelikPassword: password });
     const { user, token } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
-    return { user, token };
+    
+    // // Отправка запроса на получение информации о пользователе
+    // const userInfoResponse = await axios.get('http://localhost:6161/api/v1/userinfo', {
+    //   headers: {
+    //     'Access-Token': token,
+    //   },
+    // });
+
+    return { user: token };
   } catch (error) {
     return thunkAPI.rejectWithValue('Login or password is incorrect');
   }
@@ -33,10 +42,6 @@ const authSlice = createSlice({
     error: null,
   },
   reducers: {
-    setCredentials: (state, action) => {
-      state.login = action.payload.login;
-      state.password = action.payload.password;
-    },
     logout: (state) => {
       state.user = null;
       state.token = null;
@@ -64,7 +69,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;
 

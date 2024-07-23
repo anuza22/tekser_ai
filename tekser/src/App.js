@@ -35,7 +35,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
-        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+        <Route path="/login" element={<Login />} />
         <Route path="/check-email" element={<PublicRoute><CheckEmail /></PublicRoute>} />
         <Route path="/confirm-reset" element={<PublicRoute><ConfirmReset /></PublicRoute>} />
         <Route path="/payment" element={<PublicRoute><Payment /></PublicRoute>} />

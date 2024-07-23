@@ -15,6 +15,10 @@ export interface IUser extends Document {
   birthday: Date;
   roles: string[];
   phone?: string;
+  schoolName?: string;
+  className?: string;
+  subjectName?: string;
+  userRole?: string;
 }
 
 const UserSchema: Schema = new Schema({
@@ -32,6 +36,10 @@ const UserSchema: Schema = new Schema({
   birthday: { type: Date, required: true },
   roles: { type: [String], required: true },
   phone: { type: String, default: '' },
+  schoolName: { type: String, required: false },
+  className: { type: String, required: false },
+  subjectName: { type: String, required: false },
+  userRole: { type: String, required: false },
 });
 
 export default mongoose.model<IUser>('User', UserSchema);

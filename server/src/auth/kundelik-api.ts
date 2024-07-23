@@ -17,15 +17,12 @@ class KunBase {
     this.token = token || null;
     if (!this.token && login && password) {
 
-      this.initialize(login, password).then(() => {
-        console.log("Initialization complete");
-      }).catch(error => {
-        console.error("Initialization failed:", error);
-      });
+      this.initialize(login, password);
+      console.log("not initialized here35")
     } else {
       this.session = this.createAxiosInstance(this.token);
     }
-    // this.session = this.createAxiosInstance(this.token);
+    this.session = this.createAxiosInstance(this.token);
 
   }
 

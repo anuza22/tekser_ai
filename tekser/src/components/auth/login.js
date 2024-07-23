@@ -18,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     const action = await dispatch(loginUser({ login, password }));
     if (action.type === loginUser.fulfilled.type) {
-      navigate('/profile');
+      navigate('/');
     }
   };
 

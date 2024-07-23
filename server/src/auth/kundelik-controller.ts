@@ -2,64 +2,71 @@ import { Request, Response } from 'express';
 import User from './models/User'; // Adjust the path according to your project structure
 import { KunAPI } from './kundelik-api'; // Adjust the path according to your project structure
 
-let kundelik: KunAPI;
-
-// Controller to handle login
 export async function login(req: Request, res: Response) {
   const { kundelikLogin, kundelikPassword } = req.body;
-  
+
+  console.log("Data", kundelikLogin, kundelikPassword);
+
   if (!kundelikLogin || !kundelikPassword) {
     return res.status(400).send('Login and password are required');
   }
 
   try {
-    kundelik = new KunAPI(kundelikLogin, kundelikPassword);
-    await kundelik.initialize(kundelikLogin, kundelikPassword);
-    const userInfo = await kundelik.getInfo();
+    const api = new KunAPI(kundelikLogin, kundelikPassword);
+    // await api.initialize(kundelikLogin, kundelikPassword);
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    if (userInfo) {
-      const existingUser = await User.findOne({ kundelikLogin });
-      if (existingUser) {
-        existingUser.kundelikToken = kundelik.token!;
-        await existingUser.save();
+    const userInfo = await api.getInfo();
+    const userContext = await api.getContext();
+
+    if (userInfo && userContext) {
+      let user = await User.findOne({ kundelikLogin });
+
+      if (user) {
+        user.kundelikToken = api.token!;
+        user.schoolName = userContext.schoolName;
+        user.className = userContext.className;
+        user.subjectName = userContext.subjectName;
+        user.userRole = userContext.userRole;
       } else {
-        const newUser = new User({
+        user = new User({
+          id: userInfo.id,
+          id_str: userInfo.id_str,
+          personId: userInfo.personId,
+          personId_str: userInfo.personId_str,
           kundelikLogin,
-          kundelikPassword, // Store passwords securely in a real application
-          kundelikToken: kundelik.token,
+          kundelikPassword,
+          kundelikToken: api.token,
+          shortName: userInfo.shortName,
+          locale: userInfo.locale,
+          timezone: userInfo.timezone,
+          sex: userInfo.sex,
+          birthday: new Date(userInfo.birthday),
+          roles: userInfo.roles,
+          phone: userInfo.phone || '',
+          schoolName: userContext.schoolName,
+          className: userContext.className,
+          subjectName: userContext.subjectName,
+          userRole: userContext.userRole,
         });
-        await newUser.save();
       }
-      return res.status(200).json(userInfo);
+
+      await user.save();
+      return res.status(200).json({ user, token: api.token });
     } else {
       return res.status(500).send('Failed to retrieve user info from Kundelik.kz');
     }
   } catch (error) {
     console.error('Error during login:', error);
-    return res.status(500).send('Failed to log in to Kundelik.kz');
+    return res.status(500).send(`Failed to log in to Kundelik.kz: ${error}`);
   }
 }
 
-// Controller to fetch user by ID
-export async function getUser(req: Request, res: Response) {
-  const userId = req.params.id;
-  try {
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
-    return res.status(200).json(user);
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    return res.status(500).send('Error fetching user');
-  }
-}
+let kundelik: KunAPI;
 
-// Controller to fetch user info
 export async function getUserInfo(req: Request, res: Response) {
   try {
     const data = await kundelik.getInfo();
-    console.log(data);
     return res.status(200).json(data);
   } catch (error) {
     console.error('Error fetching user info:', error);
@@ -67,7 +74,6 @@ export async function getUserInfo(req: Request, res: Response) {
   }
 }
 
-// Controller to fetch user schools
 export async function getUserSchools(req: Request, res: Response) {
   try {
     const data = await kundelik.getSchools();
@@ -78,7 +84,6 @@ export async function getUserSchools(req: Request, res: Response) {
   }
 }
 
-// Controller to fetch user edu groups
 export async function getUserEduGroups(req: Request, res: Response) {
   try {
     const data = await kundelik.getEduGroups();
@@ -89,7 +94,6 @@ export async function getUserEduGroups(req: Request, res: Response) {
   }
 }
 
-// Controller to fetch user context
 export async function getUserContext(req: Request, res: Response) {
   try {
     const data = await kundelik.getContext();
@@ -100,7 +104,6 @@ export async function getUserContext(req: Request, res: Response) {
   }
 }
 
-// Controller to fetch person info
 export async function getPersonInfo(req: Request, res: Response) {
   const personId = Number(req.params.personId);
   try {
@@ -112,7 +115,6 @@ export async function getPersonInfo(req: Request, res: Response) {
   }
 }
 
-// Controller to fetch person groups
 export async function getPersonGroups(req: Request, res: Response) {
   const personId = Number(req.params.personId);
   try {
@@ -124,7 +126,6 @@ export async function getPersonGroups(req: Request, res: Response) {
   }
 }
 
-// Controller to fetch group info
 export async function getGroupInfo(req: Request, res: Response) {
   const groupId = Number(req.params.groupId);
   try {
@@ -136,7 +137,6 @@ export async function getGroupInfo(req: Request, res: Response) {
   }
 }
 
-// Controller to fetch group marks
 export async function getGroupMarks(req: Request, res: Response) {
   const groupId = Number(req.params.groupId);
   try {
@@ -148,7 +148,6 @@ export async function getGroupMarks(req: Request, res: Response) {
   }
 }
 
-// Controller to fetch person marks
 export async function getPersonMarks(req: Request, res: Response) {
   const personId = Number(req.params.personId);
   const schoolId = Number(req.params.schoolId);

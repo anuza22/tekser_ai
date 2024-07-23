@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import MainLayout from "../../layout/mainLayout";
-import { FaUser, FaSchool, FaUserGraduate, FaEdit, FaSave, FaTimes, FaBell, FaEnvelope, FaChalkboardTeacher, FaBook, FaCalendarAlt, FaTrophy, FaChartLine, FaCog } from 'react-icons/fa';
+import { FaUser, FaSchool, FaChalkboardTeacher, FaBook, FaTrophy, FaChartLine, FaCog, FaEdit, FaSave, FaTimes } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Avatar from "../basic/avatar";
 import Dropzone from "../basic/dropZone";
@@ -11,29 +10,9 @@ import MyModal from "../basic/modal";
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
-  const [userData, setUserData] = useState(null);
   const [notification, setNotification] = useState(true);
   const [promotionalEmail, setPromotionalEmail] = useState(false);
-  const { user, token } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userInfoResponse = await axios.get('http://localhost:6161/api/v1/userinfo', {
-          headers: {
-            'Access-Token': token,
-          },
-        });
-        setUserData(userInfoResponse.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    if (token) {
-      fetchData();
-    }
-  }, [token]);
+  const { user } = useSelector((state) => state.auth);
 
   const handleEdit = () => setIsEditing(true);
   const handleSave = () => setIsEditing(false);
@@ -49,7 +28,7 @@ const ProfilePage = () => {
     </button>
   );
 
-  if (!userData) {
+  if (!user) {
     return <div>Loading...</div>;
   }
 
@@ -64,10 +43,10 @@ const ProfilePage = () => {
           />
           <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-30 text-white p-8">
             <div className="max-w-7xl mx-auto flex items-end">
-              <Avatar image={userData.avatar} size="160px" className="border-4 border-white shadow-lg" />
+              <Avatar image={user.avatar} size="160px" className="border-4 border-white shadow-lg" />
               <div className="ml-8 mb-4">
-                <h1 className="text-5xl font-bold">{userData.name}</h1>
-                <p className="text-2xl mt-2">{userData.subject} Teacher</p>
+                <h1 className="text-5xl font-bold">{user.shortName}</h1>
+                <p className="text-2xl mt-2">{user.subjectName} Teacher</p>
               </div>
             </div>
           </div>
@@ -119,9 +98,9 @@ const ProfilePage = () => {
                   <FaUser className="mr-2 text-primary-600" /> Teacher Information
                 </h3>
                 <ul className="space-y-2 text-gray-700">
-                  <li><strong>Subject:</strong> {userData.subject}</li>
-                  <li><strong>Grade:</strong> {userData.grade}</li>
-                  <li><strong>Experience:</strong> {userData.experience}</li>
+                  <li><strong>Subject:</strong> {user.subjectName}</li>
+                  <li><strong>Grade:</strong> {user.grade || 'N/A'}</li>
+                  <li><strong>Experience:</strong> {user.experience || 'N/A'}</li>
                 </ul>
               </div>
 
@@ -130,9 +109,9 @@ const ProfilePage = () => {
                   <FaSchool className="mr-2 text-primary-600" /> School Information
                 </h3>
                 <ul className="space-y-2 text-gray-700">
-                  <li><strong>School:</strong> {userData.school}</li>
-                  <li><strong>Location:</strong> Almaty, Kazakhstan</li>
-                  <li><strong>Type:</strong> Public</li>
+                  <li><strong>School:</strong> {user.schoolName}</li>
+                  <li><strong>Location:</strong> {user.location || 'Almaty, Kazakhstan'}</li>
+                  <li><strong>Type:</strong> {user.schoolType || 'Public'}</li>
                 </ul>
               </div>
 
@@ -141,9 +120,9 @@ const ProfilePage = () => {
                   <FaChartLine className="mr-2 text-primary-600" /> Quick Stats
                 </h3>
                 <ul className="space-y-2 text-gray-700">
-                  <li><strong>Total Students:</strong> {userData.students}</li>
-                  <li><strong>Average Grade:</strong> {userData.averageGrade}/5.0</li>
-                  <li><strong>Classes:</strong> 6</li>
+                  <li><strong>Total Students:</strong> {user.students || 'N/A'}</li>
+                  <li><strong>Average Grade:</strong> {user.averageGrade || 'N/A'}/5.0</li>
+                  <li><strong>Classes:</strong> {user.classesCount || 6}</li>
                 </ul>
               </div>
             </motion.div>
@@ -182,7 +161,7 @@ const ProfilePage = () => {
                 <FaTrophy className="mr-3 text-primary-600" /> Achievements
               </h3>
               <ul className="space-y-4">
-                {userData.achievements.map((achievement, index) => (
+                {(user.achievements || []).map((achievement, index) => (
                   <li key={index} className="flex items-center">
                     <FaTrophy className="text-yellow-500 mr-3" />
                     <span>{achievement}</span>
@@ -269,4 +248,5 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+
 

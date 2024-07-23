@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import {
   login,
-  getUser,
   getUserInfo,
   getUserSchools,
   getUserEduGroups,
@@ -16,7 +15,6 @@ import {
 const router = Router();
 
 router.post('/login', login);
-router.get('/user/:id', getUser);
 router.get('/userinfo', getUserInfo);
 router.get('/userschools', getUserSchools);
 router.get('/useredugroups', getUserEduGroups);

@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Bars3Icon,
   Cog8ToothIcon,
@@ -8,10 +9,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { LocalImg } from "../components/basic/imgProvider";
 import { Menu, Transition } from "@headlessui/react";
 import LanguageSelector from '../components/basic/languageSelector';
-
+import { logout } from "../redux/authSlice";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
 
 const Header = () => {
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -46,11 +48,10 @@ const Header = () => {
     setNavbarOpen(true);
   };
 
+  const dispatch = useDispatch();
+
   const handleSignOut = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    setAuthState(false);
-    navigate("/login");
+    dispatch(logout());
   };
 
   return (
