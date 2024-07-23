@@ -16,8 +16,8 @@ function classNames(...classes) {
 
 
 const Header = () => {
-  const [navbarOpen, setNavbarOpen] = useState(true);
-  const [authState, setAuthState] = useState(true);
+  const [navbarOpen, setNavbarOpen] = useState(false);
+  const [authState, setAuthState] = useState(false);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const Header = () => {
       // setUserData(JSON.parse(user));
       setAuthState(true);
     } else {
-      setAuthState(true);
+      setAuthState(false);
     }
   }, []);
 
