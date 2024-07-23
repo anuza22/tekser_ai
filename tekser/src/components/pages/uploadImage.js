@@ -297,7 +297,7 @@ const UploadImage = () => {
               transition={{ duration: 0.5 }}
               className="mb-6"
             >
-              <h3 className="text-lg font-semibold text-purple-600 mb-2 text-center">{t('uploadedFiles')}</h3>
+              {/* <h3 className="text-lg font-semibold text-purple-600 mb-2 text-center">{t('uploadedFiles')}</h3> */}
               <div className="flex justify-center items-center space-x-2">
                 {[...Array(maxFiles)].map((_, index) => (
                   <motion.div

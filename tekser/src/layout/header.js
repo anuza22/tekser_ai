@@ -44,7 +44,7 @@ const Header = () => {
   };
 
   const myClasses = () => {
-    navigate("/myclasses");
+    navigate("/my-classes");
     setNavbarOpen(true);
   };
 
@@ -53,6 +53,10 @@ const Header = () => {
   const handleSignOut = () => {
     dispatch(logout());
   };
+
+  const handleMyProfile = () =>{
+    navigate("/profile");
+  }
 
   return (
     <>
@@ -145,6 +149,19 @@ const Header = () => {
                                   onClick={handleSignOut}
                                 >
                                   Sign out
+                                </button>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={classNames(
+                                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                                    "block w-full px-4 py-2 text-left text-sm"
+                                  )}
+                                  onClick={handleSignOut}
+                                >
+                                  My profile
                                 </button>
                               )}
                             </Menu.Item>
