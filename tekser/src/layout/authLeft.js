@@ -41,6 +41,8 @@ const LeftSide = () => {
       <Link to="/" className="mt-8 ml-8 lg:ml-16 w-fit">
         <span className="text-4xl font-bold text-white">TekserAi</span>
       </Link>
+
+      
       
       <div className="flex flex-col items-center justify-center flex-grow px-8">
         <h2 className="text-3xl font-bold text-white mb-8 text-center">Добро пожаловать в будущее образования</h2>

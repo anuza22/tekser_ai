@@ -16,8 +16,8 @@ function classNames(...classes) {
 
 
 const Header = () => {
-  const [navbarOpen, setNavbarOpen] = useState(false);
-  const [authState, setAuthState] = useState(false);
+  const [navbarOpen, setNavbarOpen] = useState(true);
+  const [authState, setAuthState] = useState(true);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const Header = () => {
       // setUserData(JSON.parse(user));
       setAuthState(true);
     } else {
-      setAuthState(false);
+      setAuthState(true);
     }
   }, []);
 
@@ -35,13 +35,9 @@ const Header = () => {
     navigate("/login");
   };
 
-  const createAvatar = () => {
-    navigate("/payment");
-  };
-
-  const handleSetting = () => {
-    navigate("/setting");
-  };
+  // const handleSetting = () => {
+  //   navigate("/setting");
+  // };
 
   const myClasses = () => {
     navigate("/my-classes");
@@ -68,10 +64,10 @@ const Header = () => {
             <img src={LocalImg.HeaderIcon} alt="Group" />
           </div> */}
               <Link
-                className="text-sm font-bold leading-relaxed contents mr-7 py-2 whitespace-nowrap"
+                className="text-sm font-bold leading-relaxed contents mr-6 py-2 whitespace-nowrap"
                 to="/"
               >
-                <span className="font-poppinsBold pl-[5rem] 2xl:text-[88px] 3xl:text-3xl sm:text-4xl text-xl 2xl:leading-[90px] text-purple-700 lg:mb-0 mb-0 lg:mt-0 sm:mt-0 mt-0">TekserAi</span>
+                <span className="font-poppinsBold pl-[3rem] 2xl:text-[60px] 3xl:text-2xl sm:text-3xl text-xl 2xl:leading-[90px] text-purple-700 lg:mb-0 mb-0 lg:mt-0 sm:mt-0 mt-0">TekserAi</span>
               </Link>
             </div>
           </div>
@@ -85,21 +81,13 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <button
-                      onClick={createAvatar}
-                      className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
-                    >
-                      Create
-                    </button>
-                  </li>
-                  <li>
                     <LanguageSelector />
                   </li>
-                  <li className="md:flex hidden">
+                  {/* <li className="md:flex hidden">
                     <button className="block" onClick={handleSetting}>
                       <Cog8ToothIcon className="w-5 h-5 text-gray-700 hover:text-primary-600" />
                     </button>
-                  </li>
+                  </li> */}
                   <li className="flex">
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
@@ -126,7 +114,7 @@ const Header = () => {
                       >
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <div className="py-1">
-                            <Menu.Item>
+                            {/* <Menu.Item>
                               {({ active }) => (
                                 <Link
                                   to="/contact"
@@ -138,7 +126,7 @@ const Header = () => {
                                   Contact
                                 </Link>
                               )}
-                            </Menu.Item>
+                            </Menu.Item> */}
                             <Menu.Item>
                               {({ active }) => (
                                 <button
@@ -159,7 +147,7 @@ const Header = () => {
                                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                                     "block w-full px-4 py-2 text-left text-sm"
                                   )}
-                                  onClick={handleSignOut}
+                                  onClick={handleMyProfile}
                                 >
                                   My profile
                                 </button>
@@ -181,24 +169,24 @@ const Header = () => {
                       className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
                       onClick={LoginHandle}
                     >
-                      Log In
+                      Login
                     </button>
                   </li>
                 </>
               )}
-              <li>
+              {/* <li>
                 <button
                   className="cursor-pointer text-xl leading-none py-1 border border-solid border-transparent rounded bg-transparent block md:hidden outline-none focus:outline-none"
                   type="button"
                   onClick={() => setNavbarOpen(navbarOpen)}
                 >
-                  {navbarOpen ? (
-                    <XMarkIcon className="text-xl h-6 w-6 stroke-[2.5px]" />
-                  ) : (
-                    <Bars3Icon className="text-xl h-6 w-6 stroke-[2.5px]" />
-                  )}
-                </button>
-              </li>
+                  {/* {navbarOpen ? ( */}
+                    {/* <XMarkIcon className="text-xl h-6 w-6 stroke-[2.5px]" /> */}
+                  {/* ) : ( */}
+                    {/* <Bars3Icon className="text-xl h-6 w-6 stroke-[2.5px]" /> */}
+                  {/* )} */}
+                {/* </button> */}
+              {/* </li> */} 
             </ul>
           </div>
         </div>

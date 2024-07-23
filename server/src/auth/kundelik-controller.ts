@@ -12,31 +12,40 @@ export async function login(req: Request, res: Response) {
   }
 
   try {
-    const api = new KunAPI(kundelikLogin, kundelikPassword);
-    // await api.initialize(kundelikLogin, kundelikPassword);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Check if the user already exists in the database
+    let user = await User.findOne({ kundelikLogin });
 
-    const userInfo = await api.getInfo();
-    const userContext = await api.getContext();
+    if (user) {
+      // User already exists, update the token and other information
+      kundelik = new KunAPI(kundelikLogin, kundelikPassword);
+      await kundelik.initialize(kundelikLogin, kundelikPassword);
+      const userInfo = await kundelik.getInfo();
+      const userContext = await kundelik.getContext();
 
-    if (userInfo && userContext) {
-      let user = await User.findOne({ kundelikLogin });
+      user.kundelikToken = kundelik.token!;
+      user.schoolName = userContext.schoolName;
+      user.className = userContext.className;
+      user.subjectName = userContext.subjectName;
+      user.userRole = userContext.userRole;
 
-      if (user) {
-        user.kundelikToken = api.token!;
-        user.schoolName = userContext.schoolName;
-        user.className = userContext.className;
-        user.subjectName = userContext.subjectName;
-        user.userRole = userContext.userRole;
-      } else {
-        user = new User({
+      await user.save();
+      return res.status(200).json({ user, token: kundelik.token });
+    } else {
+      // User does not exist, proceed with API calls and save new user
+      kundelik = new KunAPI(kundelikLogin, kundelikPassword);
+      await kundelik.initialize(kundelikLogin, kundelikPassword);
+      const userInfo = await kundelik.getInfo();
+      const userContext = await kundelik.getContext();
+
+      if (userInfo && userContext) {
+        const newUser = new User({
           id: userInfo.id,
           id_str: userInfo.id_str,
           personId: userInfo.personId,
           personId_str: userInfo.personId_str,
           kundelikLogin,
-          kundelikPassword,
-          kundelikToken: api.token,
+          kundelikPassword, // Store passwords securely in a real application
+          kundelikToken: kundelik.token,
           shortName: userInfo.shortName,
           locale: userInfo.locale,
           timezone: userInfo.timezone,
@@ -49,19 +58,18 @@ export async function login(req: Request, res: Response) {
           subjectName: userContext.subjectName,
           userRole: userContext.userRole,
         });
-      }
 
-      await user.save();
-      return res.status(200).json({ user, token: api.token });
-    } else {
-      return res.status(500).send('Failed to retrieve user info from Kundelik.kz');
+        await newUser.save();
+        return res.status(200).json({ user: newUser, token: kundelik.token });
+      } else {
+        return res.status(500).send('Failed to retrieve user info from Kundelik.kz');
+      }
     }
   } catch (error) {
     console.error('Error during login:', error);
-    return res.status(500).send(`Failed to log in to Kundelik.kz: ${error}`);
+    return res.status(500).send('Failed to log in to Kundelik.kz');
   }
 }
-
 let kundelik: KunAPI;
 
 export async function getUserInfo(req: Request, res: Response) {

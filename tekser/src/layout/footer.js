@@ -17,10 +17,10 @@ const Footer = () => {
             <Link to="/" className="mr-8">
               Privacy
             </Link>
-            <Link to="/">Contact</Link>
+            <Link to="/contact">Contact</Link>
           </div>
           <div className="flex md:mt-0 mt-6 space-x-6 justify-around w-1/2 md:w-auto md:justify-center items-center">
-            {/* <a href="https://www.twitter.com/MavaFun" className="text-gray-400 hover:text-primary-600"> */}
+            <a href="https://www.instagram.com/tekser.ai/" className="text-gray-400 hover:text-primary-600">
               <svg
                 className="w-6 h-6"
                 fill="currentColor"
@@ -29,8 +29,8 @@ const Footer = () => {
               >
                 <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
               </svg>
-            {/* </a> */}
-            {/* <a href="https://www.tiktok.com/@mava.fun" className="text-gray-400 hover:text-primary-600"> */}
+            </a>
+            <a href="https://www.instagram.com/tekser.ai/" className="text-gray-400 hover:text-primary-600">
               <svg
                 className="w-6 h-6"
                 fill="currentColor"
@@ -39,8 +39,8 @@ const Footer = () => {
               >
                 <path d="M15.0725 0.5H11.0278V16.8478C11.0278 18.7957 9.47219 20.3957 7.53626 20.3957C5.60034 20.3957 4.04469 18.7957 4.04469 16.8478C4.04469 14.9348 5.56577 13.3695 7.43257 13.3V9.19567C3.31872 9.2652 0 12.6391 0 16.8478C0 21.0913 3.38786 24.5 7.57085 24.5C11.7538 24.5 15.1416 21.0565 15.1416 16.8478V8.4652C16.6627 9.57827 18.5295 10.2391 20.5 10.2739V6.16957C17.4579 6.06522 15.0725 3.56087 15.0725 0.5Z" />
               </svg>
-            {/* </a> */}
-            {/* <a href="https://www.instagram.com/mava.fun/" className="text-gray-400 hover:text-primary-600"> */}
+            </a>
+            <a href="https://www.instagram.com/tekser.ai/" className="text-gray-400 hover:text-primary-600">
               <svg
                 className="w-6 h-6"
                 fill="currentColor"
@@ -53,7 +53,7 @@ const Footer = () => {
                   clipRule="evenodd"
                 />
               </svg>
-            {/* </a> */}
+            </a>
           </div>
         </div>
       </div>

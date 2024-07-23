@@ -43,7 +43,7 @@ function App() {
         <Route path="/setting" element={<PrivateRoute><Setting /></PrivateRoute>} />
         <Route path="/success" element={<PrivateRoute><Success /></PrivateRoute>} />
         <Route path="/my-classes" element={<PrivateRoute><MyClasses /></PrivateRoute>} />
-        <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Router>
