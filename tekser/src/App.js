@@ -40,7 +40,7 @@ function App() {
         <Route path="/confirm-reset" element={<PublicRoute><ConfirmReset /></PublicRoute>} />
         <Route path="/payment" element={<PublicRoute><Payment /></PublicRoute>} />
         <Route path="/upload" element={<UploadImage />} />
-        <Route path="/setting" element={<PrivateRoute><Setting /></PrivateRoute>} />
+        <Route path="/setting" element={<Setting />} />
         <Route path="/success" element={<PrivateRoute><Success /></PrivateRoute>} />
         <Route path="/my-classes" element={<PrivateRoute><MyClasses /></PrivateRoute>} />
         <Route path="/profile" element={<ProfilePage />} />

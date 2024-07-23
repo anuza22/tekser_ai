@@ -127,7 +127,7 @@ const Header = () => {
                                 </Link>
                               )}
                             </Menu.Item> */}
-                            <Menu.Item>
+                            {/* <Menu.Item>
                               {({ active }) => (
                                 <button
                                   className={classNames(
@@ -139,7 +139,7 @@ const Header = () => {
                                   Sign out
                                 </button>
                               )}
-                            </Menu.Item>
+                            </Menu.Item> */}
                             <Menu.Item>
                               {({ active }) => (
                                 <button
@@ -164,14 +164,14 @@ const Header = () => {
                   <li>
                     <LanguageSelector />
                   </li>
-                  <li>
+                  {/* <li>
                     <button
                       className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
                       onClick={LoginHandle}
                     >
                       Login
                     </button>
-                  </li>
+                  </li> */}
                 </>
               )}
               {/* <li>
