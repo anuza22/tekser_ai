@@ -585,17 +585,17 @@ const UploadImage = () => {
 
   const exampleImages = [
     {
-      src: 'https://anuza.s3.eu-north-1.amazonaws.com/Physic.png',
+      src: LocalImg.Physic,
       description: 'Physic Homework',
       downloadLink: LocalImg.Physic,
     },
     {
-      src: 'https://anuza.s3.eu-north-1.amazonaws.com/Mathematic.png',
+      src: LocalImg.Math,
       description: 'Mathematic Homework',
       downloadLink: LocalImg.Math
     },
     {
-      src: 'https://anuza.s3.eu-north-1.amazonaws.com/chemistry.jpg',
+      src: LocalImg.Chemistry,
       description: 'Chemistry Homework',
       downloadLink: LocalImg.Chemistry
     }
@@ -614,12 +614,10 @@ const UploadImage = () => {
   }, []);
 
   const handleUseExample = (example) => {
-    // Создаем новый объект File с корректным MIME типом
-    const file = new File([], example.description, { type: 'image/png' });
-  
-    setSelectedFiles({ homework: [file], sor_soch: [null, null] });
+    setSelectedFiles({ homework: [new File([], example.description)], sor_soch: [null, null] });
     setUploadedFilesCount(1);
-    setSubject(example.description.split(' ')[0]); // Устанавливаем предмет на основе описания примера
+    setSubject(example.description.split(' ')[0]);
+    // setShowExampleModal(false);
     setShowExampleNotification(true);
     setTimeout(() => setShowExampleNotification(false), 5000);
   };
@@ -961,31 +959,31 @@ const UploadImage = () => {
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
-  {exampleImages.map((example, index) => (
-    <motion.div
-      key={index}
-      whileHover={{ scale: 1.05, rotate: 2 }}
-      whileTap={{ scale: 0.95 }}
-      className="overflow-hidden rounded-2xl shadow-2xl cursor-pointer relative"
-      onClick={() => handleUseExample(example)}
-      onMouseEnter={() => handleExampleHover(example)}
-      onMouseLeave={handleExampleLeave}
-    >
-      <img src={example.src} alt={`Example ${index + 1}`} className="w-full h-60 object-cover" />
-      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleExampleDownload(example);
-          }}
-          className="bg-white text-purple-600 px-4 py-2 rounded-full font-semibold"
-        >
-          {t('Использовать')}
-        </button>
-      </div>
-    </motion.div>
-  ))}
-</div>
+            {exampleImages.map((example, index) => (
+              <motion.div 
+                key={index} 
+                whileHover={{ scale: 1.05, rotate: 2 }}
+                whileTap={{ scale: 0.95 }}
+                className="overflow-hidden rounded-2xl shadow-2xl cursor-pointer relative"
+                onClick={() => setSelectedExample(example)}
+                onMouseEnter={() => handleExampleHover(example)}
+                onMouseLeave={handleExampleLeave}
+              >
+                <img src={example.src} alt={`Example ${index + 1}`} className="w-full h-60 object-cover" />
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleExampleDownload(example);
+                    }}
+                    className="bg-white text-purple-600 px-4 py-2 rounded-full font-semibold"
+                  >
+                    {t('Скачать и Использовать')}
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
           <AnimatePresence>
             {showExampleHint && activeExample && (
               <motion.div
