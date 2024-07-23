@@ -614,7 +614,7 @@ const UploadImage = () => {
   }, []);
 
   const handleUseExample = (example) => {
-    setSelectedFiles({ homework: [new File([], example.description)], sor_soch: [null, null] });
+    setSelectedFiles({ homework: [new File([], example.downloadLink)], sor_soch: [null, null] });
     setUploadedFilesCount(1);
     setSubject(example.description.split(' ')[0]);
     // setShowExampleModal(false);
