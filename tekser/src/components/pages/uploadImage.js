@@ -585,19 +585,19 @@ const UploadImage = () => {
 
   const exampleImages = [
     {
-      src: LocalImg.Physic,
+      src: 'https://anuza.s3.eu-north-1.amazonaws.com/Physic.png',
       description: 'Physic Homework',
-      downloadLink: LocalImg.Physic,
+      downloadLink: 'https://anuza.s3.eu-north-1.amazonaws.com/Physic.png',
     },
     {
-      src: LocalImg.Math,
+      src: 'https://anuza.s3.eu-north-1.amazonaws.com/Mathematic.png',
       description: 'Mathematic Homework',
-      downloadLink: LocalImg.Math
+      downloadLink: 'https://anuza.s3.eu-north-1.amazonaws.com/Mathematic.png'
     },
     {
-      src: LocalImg.Chemistry,
+      src: 'https://anuza.s3.eu-north-1.amazonaws.com/chemistry.jpg',
       description: 'Chemistry Homework',
-      downloadLink: LocalImg.Chemistry
+      downloadLink: 'https://anuza.s3.eu-north-1.amazonaws.com/chemistry.jpg'
     }
   ];
 
@@ -1027,7 +1027,7 @@ const UploadImage = () => {
                   {t('Скачать пример')}
                 </button>
                 <button 
-                  onClick={() => handleUseExample(selectedExample)}
+                  onClick={() => handleExampleDownload(selectedExample)}
                   className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200"
                 >
                   {t('Использовать пример')}
