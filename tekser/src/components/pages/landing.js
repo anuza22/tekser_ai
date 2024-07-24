@@ -94,7 +94,7 @@ const Landing = () => {
             <div className="sm:h-32 h-1 sm:w-1 w-full bg-primary-100"></div>
             <div className="flex flex-col text-center sm:w-1/3 w-2/3">
               <span className="xl:text-5xl lg:text-3xl text-2xl font-poppinsBold text-primary-600 mb-1">
-                {uploadCount}
+                {uploadCount+30}+
               </span>
               <span className="sm:text-xl font-poppinsRegular text-primary-900">
               {t('happyTeachers')}

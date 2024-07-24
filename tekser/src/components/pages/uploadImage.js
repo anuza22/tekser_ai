@@ -585,7 +585,7 @@ const UploadImage = () => {
 
   const exampleImages = [
     {
-      src: 'https://anuza.s3.eu-north-1.amazonaws.com/Physic.png',
+      src: 'https://anuza.s3.eu-north-1.amazonaws.com/physic1.jpg',
       description: 'Physic Homework',
       downloadLink: LocalImg.Physic,
     },
