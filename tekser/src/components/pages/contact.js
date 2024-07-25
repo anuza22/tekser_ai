@@ -21,7 +21,7 @@ const Contact = () => {
 
     if (isValid) {
       const response = await fetch('https://aisun-production.up.railway.app/send-email', {
-        method: 'POST',
+        method: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         headers: {
           'Content-Type': 'application/json',
         },

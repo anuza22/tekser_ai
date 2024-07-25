@@ -44,7 +44,7 @@ app.post('/api/increment-upload-count', (req, res) => {
 
 // CORS setup
 const corsOptions = {
-    origin: 'https://aisun-vy43.vercel.app', // URL вашего фронтенда
+    origin: 'https://tekser-ai.vercel.app', // URL вашего фронтенда
     // origin: "http://localhost:3000",
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
