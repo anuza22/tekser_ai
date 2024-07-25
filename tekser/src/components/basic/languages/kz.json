@@ -51,7 +51,25 @@
     "Click_upload": "Жүктеу үшін батырманы басыңыз",
     "drop_the_images_here": "суреттерді мұнда тастаңыз",
     "or_drag_and_drop": "немесе сүйреп апарып тастаңыз",
-    "PNG_or_JPG": "PNG немесе JPG"
+    "PNG_or_JPG": "PNG немесе JPG",
+    
+        "contactUs": "Бізге жазыңыз",
+        "weLoveToHear": "Біз сіздің пікіріңізді тыңдағымыз келеді. Өтінеміз, осы нысанды толтырыңыз.",
+        "firstName": "Аты",
+        "lastName": "Тегі",
+        "email": "Email",
+        "message": "Хабарлама",
+        "leaveMessage": "Хабарлама қалдырыңыз...",
+        "sendMessage": "Хабарлама жіберу",
+        "pleaseConfirmEmail": "Өтінеміз, email-ді растаңыз",
+        "pleaseEnterEmail": "Өтінеміз, email енгізіңіз",
+        "pleaseLeaveMessage": "Өтінеміз, хабарлама қалдырыңыз",
+        "pleaseEnterFirstName": "Өтінеміз, атыңызды енгізіңіз",
+        "pleaseEnterLastName": "Өтінеміз, тегіңізді енгізіңіз",
+        "messageSentSuccess": "Хабарлама сәтті жіберілді!",
+        "messageSentFail": "Хабарламаны жіберу сәтсіз аяқталды."
+      
+      
 }
 
 

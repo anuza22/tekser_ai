@@ -43,6 +43,10 @@ const Header = () => {
     navigate("/my-classes");
     setNavbarOpen(true);
   };
+  const contact = () => {
+    navigate("/contact");
+    setNavbarOpen(true);
+  };
 
   const dispatch = useDispatch();
 
@@ -172,8 +176,17 @@ const Header = () => {
                       Login
                     </button>
                   </li> */}
+
                 </>
               )}
+               <li>
+                    <button
+                      className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
+                      onClick={contact}
+                    >
+                      Contact
+                    </button>
+                  </li>
               {/* <li>
                 <button
                   className="cursor-pointer text-xl leading-none py-1 border border-solid border-transparent rounded bg-transparent block md:hidden outline-none focus:outline-none"

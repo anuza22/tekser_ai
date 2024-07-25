@@ -51,6 +51,24 @@
     "Click_upload": "Нажмите для загрузки файла",
     "drop_the_images_here": "перетащите изображения сюда",
     "or_drag_and_drop": "или перетащите и отпустите",
-    "PNG_or_JPG": "PNG или JPG"
+    "PNG_or_JPG": "PNG или JPG",
+    
+      "contactUs": "Напишите разработчику",
+      "weLoveToHear": "Мы будем рады услышать ваше мнение. Пожалуйста, заполните эту форму.",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "email": "Email",
+      "message": "Сообщение",
+      "leaveMessage": "Оставьте сообщение...",
+      "sendMessage": "Отправить сообщение",
+      "pleaseConfirmEmail": "Пожалуйста, подтвердите ваш email",
+      "pleaseEnterEmail": "Пожалуйста, введите ваш email",
+      "pleaseLeaveMessage": "Пожалуйста, оставьте сообщение",
+      "pleaseEnterFirstName": "Пожалуйста, введите ваше имя",
+      "pleaseEnterLastName": "Пожалуйста, введите вашу фамилию",
+      "messageSentSuccess": "Сообщение успешно отправлено!",
+      "messageSentFail": "Не удалось отправить сообщение."
+    
+    
   }
   

@@ -51,6 +51,21 @@
     "Click_upload": "Click to Upload",
     "drop_the_images_here": "drop the images here",
     "or_drag_and_drop": "or drag and drop",
-    "PNG_or_JPG": "PNG or JPG"
+    "PNG_or_JPG": "PNG or JPG",
+    "contactUs": "Contact Us",
+    "weLoveToHear": "We’d love to hear from you. Please fill out this form.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "message": "Message",
+    "leaveMessage": "Leave us a message...",
+    "sendMessage": "Send message",
+    "pleaseConfirmEmail": "Please confirm your email",
+    "pleaseEnterEmail": "Please enter your email",
+    "pleaseLeaveMessage": "Please leave a message",
+    "pleaseEnterFirstName": "Please enter your firstname",
+    "pleaseEnterLastName": "Please enter your lastname",
+    "messageSentSuccess": "Message sent successfully!",
+    "messageSentFail": "Failed to send message."
 
 }

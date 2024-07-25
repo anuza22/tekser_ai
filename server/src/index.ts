@@ -11,6 +11,7 @@ import { loginToKundelik } from './kundelik/kundelik-service';
 import bodyParser from 'body-parser';
 import { KunAPI } from './auth/kundelik-api';
 import { Annotation, annotateImage } from './gpt/test';
+import { sendEmail } from './api/contact';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +26,9 @@ app.use(bodyParser.json());
 
 
 let uploadCount = 1;
+
+app.post('/send-email', sendEmail);
+
 
 app.use(cors());
 app.use(express.json());

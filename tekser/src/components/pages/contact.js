@@ -1,53 +1,63 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import MainLayout from "../../layout/mainLayout";
-// import { contactUs } from "../../redux/user/user";
+import { useTranslation } from "react-i18next";
 
 const Contact = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const { t } = useTranslation();
   const [message, setMessage] = useState("");
-  const [error, setError] = useState({});
+  const [error, setError] = useState({
+    email: "",
+    firstName: "",
+    lastName: "",
+    message: ""
+  });
 
-  const dispatch = useDispatch();
-
-  const SendMessage = (e) => {
+  const SendMessage = async (e) => {
     e.preventDefault();
-    handleValidate();
+    const isValid = handleValidate();
+
+    if (isValid) {
+      const response = await fetch('https://aisun-production.up.railway.app/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          message,
+        }),
+      });
+
+      if (response.ok) {
+        setMessage(""); // Очистить сообщение
+        alert(t('messageSentSuccess'));
+      } else {
+        alert(t('messageSentFail'));
+      }
+    }
   };
 
   const handleValidate = () => {
     let emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-    setError({
+    const errors = {
       email: email.length
         ? emailValid
           ? ""
-          : "Please confirm your email"
-        : "Please enter your email",
-      message: message.length ? "" : "Please leave a message",
-      firstName: firstName.length ? "" : "Please enter your firstname",
-      lastName: lastName.length ? "" : "Please enter your lastname",
-    });
-  };
+          : t('pleaseConfirmEmail')
+        : t('pleaseEnterEmail'),
+      message: message.length ? "" : t('pleaseLeaveMessage'),
+      firstName: firstName.length ? "" : t('pleaseEnterFirstName'),
+      lastName: lastName.length ? "" : t('pleaseEnterLastName'),
+    };
+    setError(errors);
 
-  useEffect(() => {
-    if (
-      error.email === "" &&
-      error.firstName === "" &&
-      error.lastName === "" &&
-      error.message === ""
-    ) {
-      const data = {
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        message: message,
-      };
-      // dispatch(contactUs(data));
-      setMessage("");
-    }
-  }, [error, dispatch, email, firstName, lastName, message]);
+    return !Object.values(errors).some((msg) => msg !== "");
+  };
 
   return (
     <MainLayout>
@@ -57,10 +67,10 @@ const Contact = () => {
       >
         <div className="text-center md:px-4 lg:px-16">
           <h1 className="font-poppinsSemiBold text-4xl sm:text-5xl mt-16">
-            Contact Us
+            {t('contactUs')}
           </h1>
           <p className="mt-1 text-sm sm:text-lg text-gray-600">
-            We’d love to hear from you. Please fill out this form.
+            {t('weLoveToHear')}
           </p>
         </div>
         <div className="w-full sm:px-10 mt-16">
@@ -71,13 +81,13 @@ const Contact = () => {
                   htmlFor="first_name"
                   className="block mb-1.5 text-sm font-poppinsMedium text-gray-900"
                 >
-                  First name
+                  {t('firstName')}
                 </label>
                 <input
                   type="text"
                   id="first_name"
                   className="border border-gray-300 focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none text-base rounded-lg mt-1 block w-full py-2.5 px-3.5"
-                  placeholder="First name"
+                  placeholder={t('firstName')}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
                 {error.firstName && (
@@ -91,13 +101,13 @@ const Contact = () => {
                   htmlFor="last_name"
                   className="block mb-1.5 text-sm font-poppinsMedium text-gray-900"
                 >
-                  Last name
+                  {t('lastName')}
                 </label>
                 <input
                   type="text"
                   id="last_name"
                   className="border border-gray-300 focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none text-base rounded-lg mt-1 block w-full py-2.5 px-3.5"
-                  placeholder="Last name"
+                  placeholder={t('lastName')}
                   onChange={(e) => setLastName(e.target.value)}
                 />
                 {error.lastName && (
@@ -112,13 +122,13 @@ const Contact = () => {
                 htmlFor="email"
                 className="block mb-1.5 text-sm font-poppinsMedium text-gray-900"
               >
-                Email
+                {t('email')}
               </label>
               <input
                 type="text"
                 id="email"
                 className="border border-gray-300 focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none text-base rounded-lg mt-1 block w-full py-2.5 px-3.5"
-                placeholder="Your email"
+                placeholder={t('email')}
                 onChange={(e) => setEmail(e.target.value)}
               />
               {error.email && (
@@ -132,13 +142,13 @@ const Contact = () => {
                 htmlFor="message"
                 className="block mb-1.5 text-sm font-poppinsMedium text-gray-900"
               >
-                Message
+                {t('message')}
               </label>
               <textarea
                 rows={5}
                 id="message"
                 className="border border-gray-300 focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none text-base rounded-lg mt-1 block w-full py-2.5 px-3.5 resize-none"
-                placeholder="Leave us a message..."
+                placeholder={t('leaveMessage')}
                 onChange={(e) => setMessage(e.target.value)}
                 value={message}
               />
@@ -152,7 +162,7 @@ const Contact = () => {
               className="bg-primary-600 rounded-lg w-full py-2.5 mt-8 text-white font-poppinsSemiBold text-sm"
               type="submit"
             >
-              Send message
+              {t('sendMessage')}
             </button>
           </form>
         </div>
