@@ -900,7 +900,7 @@ const UploadImage = () => {
                 </div>
                 <div>
                   <p className="mb-2"><strong>{t('feedback')}:</strong> {results.feedback}</p>
-                  <p className="mb-2"><strong>{t("image")}:</strong> {results.annotatedImageUrl}</p>
+                  {/* <p className="mb-2"><strong>{t("image")}:</strong> {results.annotatedImageUrl}</p> */}
                   <p className="mb-2"><strong>{t('mistakes')}:</strong> {results.mistakes}</p>
                 </div>
               </div>
