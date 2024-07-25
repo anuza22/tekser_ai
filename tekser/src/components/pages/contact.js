@@ -7,6 +7,8 @@ const Contact = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const { t } = useTranslation();
+  const [successMessage, setSuccessMessage] = useState("");
+
   const [message, setMessage] = useState("");
   const [error, setError] = useState({
     email: "",
@@ -14,6 +16,15 @@ const Contact = () => {
     lastName: "",
     message: ""
   });
+
+  const SuccessMessage = ({ message }) => (
+    <div className="flex items-center bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
+      <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+      </svg>
+      <span className="block sm:inline">{message}</span>
+    </div>
+  );
 
   const SendMessage = async (e) => {
     e.preventDefault();
@@ -34,8 +45,10 @@ const Contact = () => {
       });
 
       if (response.ok) {
-        setMessage(""); // Очистить сообщение
-        alert(t('messageSentSuccess'));
+        setMessage(""); // Clear the message
+        setSuccessMessage(t('messageSentSuccess'));
+        // Clear the success message after 5 seconds
+        setTimeout(() => setSuccessMessage(""), 5000);
       } else {
         alert(t('messageSentFail'));
       }
@@ -164,6 +177,7 @@ const Contact = () => {
             >
               {t('sendMessage')}
             </button>
+            {successMessage && <SuccessMessage message={successMessage} />}
           </form>
         </div>
       </div>
