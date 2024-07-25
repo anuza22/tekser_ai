@@ -57,6 +57,11 @@ const Contact = () => {
         }),
       });
 
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setMessage("");
+
       setShowSuccessMessage(true);
 
     
@@ -126,12 +131,13 @@ const Contact = () => {
                   {t('lastName')}
                 </label>
                 <input
-                  type="text"
-                  id="last_name"
-                  className="border border-gray-300 focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none text-base rounded-lg mt-1 block w-full py-2.5 px-3.5"
-                  placeholder={t('lastName')}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
+  type="text"
+  id="last_name"
+  value={lastName}
+  className="border border-gray-300 focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none text-base rounded-lg mt-1 block w-full py-2.5 px-3.5"
+  placeholder={t('lastName')}
+  onChange={(e) => setLastName(e.target.value)}
+/>
                 {error.lastName && (
                   <div className="font-poppinsMedium mt-2 text-red-500">
                     {error.lastName}
@@ -147,12 +153,13 @@ const Contact = () => {
                 {t('email')}
               </label>
               <input
-                type="text"
-                id="email"
-                className="border border-gray-300 focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none text-base rounded-lg mt-1 block w-full py-2.5 px-3.5"
-                placeholder={t('email')}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+  type="text"
+  id="email"
+  value={email}
+  className="border border-gray-300 focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none text-base rounded-lg mt-1 block w-full py-2.5 px-3.5"
+  placeholder={t('email')}
+  onChange={(e) => setEmail(e.target.value)}
+/>
               {error.email && (
                 <div className="font-poppinsMedium mt-2 text-red-500">
                   {error.email}
@@ -187,11 +194,11 @@ const Contact = () => {
               {t('sendMessage')}
             </button>
             {showSuccessMessage && (
-      <SuccessMessagePopup
-        message={t('messageSentSuccess')}
-        onClose={() => setShowSuccessMessage(false)}
-      />
-    )}          </form>
+        <SuccessMessagePopup
+          message={t('messageSentSuccess')}
+          onClose={() => setShowSuccessMessage(false)}
+        />
+      )} </form>
         </div>
       </div>
     </MainLayout>
