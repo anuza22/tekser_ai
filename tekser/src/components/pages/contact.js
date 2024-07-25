@@ -7,8 +7,7 @@ const Contact = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const { t } = useTranslation();
-  const [successMessage, setSuccessMessage] = useState("");
-
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState({
     email: "",
@@ -17,12 +16,26 @@ const Contact = () => {
     message: ""
   });
 
-  const SuccessMessage = ({ message }) => (
-    <div className="flex items-center bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
-      <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
-      </svg>
-      <span className="block sm:inline">{message}</span>
+  const SuccessMessagePopup = ({ message, onClose }) => (
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+      <div className="relative p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div className="mt-3 text-center">
+          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+            <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <h3 className="text-lg leading-6 font-medium text-gray-900 mt-2">{message}</h3>
+          <div className="mt-2 px-7 py-3">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 
@@ -44,14 +57,9 @@ const Contact = () => {
         }),
       });
 
-      if (response.ok) {
-        setMessage(""); // Clear the message
-        setSuccessMessage(t('messageSentSuccess'));
-        // Clear the success message after 5 seconds
-        setTimeout(() => setSuccessMessage(""), 5000);
-      } else {
-        alert(t('messageSentFail'));
-      }
+      setShowSuccessMessage(true);
+
+    
     }
   };
 
@@ -99,6 +107,7 @@ const Contact = () => {
                 <input
                   type="text"
                   id="first_name"
+                  value={firstName}
                   className="border border-gray-300 focus:shadow-primary focus:border-primary-600 focus:ring-1 focus:ring-primary-600 focus:outline-none text-base rounded-lg mt-1 block w-full py-2.5 px-3.5"
                   placeholder={t('firstName')}
                   onChange={(e) => setFirstName(e.target.value)}
@@ -177,8 +186,12 @@ const Contact = () => {
             >
               {t('sendMessage')}
             </button>
-            {successMessage && <SuccessMessage message={successMessage} />}
-          </form>
+            {showSuccessMessage && (
+      <SuccessMessagePopup
+        message={t('messageSentSuccess')}
+        onClose={() => setShowSuccessMessage(false)}
+      />
+    )}          </form>
         </div>
       </div>
     </MainLayout>

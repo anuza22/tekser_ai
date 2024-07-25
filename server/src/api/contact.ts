@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export const sendEmail = async (req: Request, res: Response) => {
   const { firstName, lastName, email, message } = req.body;
 
@@ -13,15 +17,15 @@ export const sendEmail = async (req: Request, res: Response) => {
     let transporter = nodemailer.createTransport({
       service: 'gmail', // Выберите свой почтовый сервис
       auth: {
-        user: process.env.GMAIL_LOGIN!, // Ваша почта
-        pass: process.env.GMAIL_PASSWORD!, // Ваш пароль
+        user: 'anuza.2005@gmail.com', // Ваша почта
+        pass: 'dzsu ioyo ashj wkvi', // Ваш пароль
       },
     });
-
+    
     // Настройка письма
     let mailOptions = {
       from: email,
-      to: process.env.GMAIL_LOGIN!, // Ваша почта, куда будет приходить сообщение
+      to: 'anuza.2005@gmail.com', // Ваша почта, куда будет приходить сообщение
       subject: `Message from ${firstName} ${lastName}`,
       text: message,
     };
