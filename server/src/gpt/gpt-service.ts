@@ -49,7 +49,7 @@ async function annotateImageInMemory(imageUrl: string, correctPositions: { x: nu
 }
 
 class GPTservice {
-  async checkHW(imagePaths: string[], subject: string, grade: number, language: string, kidness: number, maxScore: number) {
+  async checkHW(imagePaths: string[], subject: string, grade: number, language: string, kindness: number, maxScore: number) {
     console.log(imagePaths);
     try {
       // Ensure there are exactly 5 image URLs
@@ -65,7 +65,7 @@ class GPTservice {
         .replace('{language}', language)
         .replace('{grade}', `${grade}`)
         .replace("{maxScore}", `${maxScore}`)
-        .replace('{kidness}', `${kidness}`);
+        .replace('{kindness}', `${kindness}`);
 
       const response = await openai.chat.completions.create({
         model: "gpt-4o",
@@ -78,11 +78,15 @@ class GPTservice {
             { type: "text", text: prompt },
             {
               type: "image_url",
+              image_url: { "url": filledImagePaths[0],  "detail": "auto"},
+            },
+            {
+              type: "image_url",
               image_url: { "url": filledImagePaths[1],  "detail": "auto"},
             },
             {
               type: "image_url",
-              image_url: { "url": filledImagePaths[2],  "detail": "auto"},
+              image_url: { "url": filledImagePaths[2],  "detail": "auto" },
             },
             {
               type: "image_url",
@@ -91,10 +95,6 @@ class GPTservice {
             {
               type: "image_url",
               image_url: { "url": filledImagePaths[4],  "detail": "auto" },
-            },
-            {
-              type: "image_url",
-              image_url: { "url": filledImagePaths[5],  "detail": "auto" },
             }
           ],
         }],
@@ -125,6 +125,121 @@ class GPTservice {
         console.log(`Annotated image URL: ${annotatedImageUrl}`);
 
         parsedRes.annotatedImageUrl = annotatedImageUrl;
+
+        return parsedRes;
+      } else {
+        return null;
+      }
+    } catch (error: any) {
+      console.log(error.message);
+      return null;
+    }
+  }
+
+
+  async checkSorSoch(emptyTemplates: string[], studentWorks: string[], subject: string, grade: number, language: string, kindness: number, maxScore: number) {
+    console.log(emptyTemplates, studentWorks);
+    try {
+      // Ensure there are exactly 5 image URLs
+      const filledTempImagePaths = [...emptyTemplates];
+      while (filledTempImagePaths.length < 6) {
+        filledTempImagePaths.push(DEFAULT_IMAGE_URL);
+      }
+
+      console.log(filledTempImagePaths);
+
+      const filledStudImagePaths = [...studentWorks];
+      while (filledStudImagePaths.length < 6) {
+        filledStudImagePaths.push(DEFAULT_IMAGE_URL);
+      }
+
+      console.log(filledStudImagePaths);
+
+      const prompt = systemPrompt
+        .replace('{subject}', subject)
+        .replace('{language}', language)
+        .replace('{grade}', `${grade}`)
+        .replace("{maxScore}", `${maxScore}`)
+        .replace('{kindness}', `${kindness}`);
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o",
+        response_format: {
+          type: 'json_object'
+        },
+        messages: [{
+          role: "user",
+          content: [
+            { type: "text", text: prompt },
+            {
+              type: "image_url",
+              image_url: { "url": filledTempImagePaths[0],  "detail": "auto"},
+            },
+            {
+              type: "image_url",
+              image_url: { "url": filledTempImagePaths[1],  "detail": "auto"},
+            },
+            {
+              type: "image_url",
+              image_url: { "url": filledTempImagePaths[2],  "detail": "auto" },
+            },
+            {
+              type: "image_url",
+              image_url: { "url": filledTempImagePaths[3],  "detail": "auto" },
+            },
+            {
+              type: "image_url",
+              image_url: { "url": filledTempImagePaths[4],  "detail": "auto" },
+            }, 
+            {
+              type: "image_url",
+              image_url: { "url": filledStudImagePaths[0],  "detail": "auto"},
+            },
+            {
+              type: "image_url",
+              image_url: { "url": filledStudImagePaths[1],  "detail": "auto"},
+            },
+            {
+              type: "image_url",
+              image_url: { "url": filledStudImagePaths[2],  "detail": "auto" },
+            },
+            {
+              type: "image_url",
+              image_url: { "url": filledStudImagePaths[3],  "detail": "auto" },
+            },
+            {
+              type: "image_url",
+              image_url: { "url": filledStudImagePaths[4],  "detail": "auto" },
+            }
+          ],
+        }],
+        temperature: 0.3
+      });
+
+      console.log(response.choices);
+      const resContent = response.choices[0].message.content;
+
+      if (resContent) {
+        const parsedRes = JSON.parse(resContent);
+        console.log(parsedRes);
+        if (parsedRes.google_search_query) {
+          const searchLinks = await SearchLinks(parsedRes.google_search_query);
+          parsedRes.searchLinks = searchLinks.map(item => item.link);
+        }
+        console.log(parsedRes.searchLinks);
+
+        // // Аннотируем изображение в памяти
+        // const annotatedImageBuffer = await annotateImageInMemory(
+        //   filledImagePaths[1],
+        //   parsedRes.correct_problems_positions,
+        //   parsedRes.wrong_problems_positions
+        // );
+
+        // // Загружаем аннотированное изображение в S3
+        // const annotatedImageUrl = await uploadFile(process.env.AWS_S3_BUCKET_NAME!, 'annotated_image.jpg', annotatedImageBuffer);
+        // console.log(`Annotated image URL: ${annotatedImageUrl}`);
+
+        // parsedRes.annotatedImageUrl = annotatedImageUrl;
 
         return parsedRes;
       } else {

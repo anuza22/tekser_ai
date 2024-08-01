@@ -2,8 +2,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProfilePage from "./components/pages/profile";
-import CheckEmail from "./components/auth/checkEmail";
-import ConfirmReset from "./components/auth/confirmReset";
 import Login from "./components/auth/login";
 import UploadImage from "./components/pages/uploadImage";
 import Setting from "./components/pages/setting";
@@ -17,7 +15,6 @@ import { PublicRoute } from "./components/helpers/publicRoute";
 import Payment from "./components/pages/payment";
 import Terms from "./components/pages/terms";
 import PageNotFound from "./components/pages/pageNotFound";
-import Home from "./components/pages/home";
 import MyClasses from "./components/pages/myClasses";
 
 function App() {
@@ -31,14 +28,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/check-email" element={<PublicRoute><CheckEmail /></PublicRoute>} />
-        <Route path="/confirm-reset" element={<PublicRoute><ConfirmReset /></PublicRoute>} />
-        <Route path="/payment" element={<PublicRoute><Payment /></PublicRoute>} />
+        <Route path="/payment" element={<Payment />} />
         <Route path="/upload" element={<UploadImage />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="/success" element={<PrivateRoute><Success /></PrivateRoute>} />

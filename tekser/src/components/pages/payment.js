@@ -56,11 +56,8 @@ const Payment = () => {
                   Check Homework
                 </span>
                 <span className="text-xs text-gray-600 font-poppinsMedium">
-                  Mava.fun - Create a one-of-a-kind AI art portrait of yourself
-                  or a loved one. Perfect for social media profile pictures,
-                  gifts, or just for fun. Purchase includes 50 Basic Pack
-                  images. Simply upload a portrait and let our AI algorithms do
-                  the rest.
+
+TekserAi - Revolutionize the way you grade homework with TekserAi! Perfect for educators who value efficiency and accuracy, TekserAi automatically checks and grades assignments with precision. Ideal for enhancing your teaching workflow, reducing grading time, and providing detailed feedback to students. Simply upload the assignments and let our advanced AI algorithms handle the rest.
                 </span>
               </div>
               <div className="text-sm text-gray-900 pl-6">$10.00</div>

@@ -19,14 +19,8 @@ export async function login(req: Request, res: Response) {
       // User already exists, update the token and other information
       kundelik = new KunAPI(kundelikLogin, kundelikPassword);
       await kundelik.initialize(kundelikLogin, kundelikPassword);
-      const userInfo = await kundelik.getInfo();
-      const userContext = await kundelik.getContext();
 
       user.kundelikToken = kundelik.token!;
-      user.schoolName = userContext.schoolName;
-      user.className = userContext.className;
-      user.subjectName = userContext.subjectName;
-      user.userRole = userContext.userRole;
 
       await user.save();
       return res.status(200).json({ user, token: kundelik.token });
@@ -36,6 +30,7 @@ export async function login(req: Request, res: Response) {
       await kundelik.initialize(kundelikLogin, kundelikPassword);
       const userInfo = await kundelik.getInfo();
       const userContext = await kundelik.getContext();
+      const eduGroups = await kundelik.getEduGroups();
 
       if (userInfo && userContext) {
         const newUser = new User({

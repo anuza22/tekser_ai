@@ -556,7 +556,8 @@ const uploadTypes = ["Homework", "СОР СОЧ"];
 const UploadImage = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const [selectedFiles, setSelectedFiles] = useState({ homework: null, sor_soch: [null, null] });
+  const [selectedFiles, setSelectedFiles] = useState();
+  const [sorSochFiles, setSorSochFiles] = useState([]);
   const [subject, setSubject] = useState(subjects[0]);
   const [grade, setGrade] = useState(grades[0]);
   const [kindness, setKindness] = useState(50);
@@ -645,58 +646,68 @@ const UploadImage = () => {
 
   const handleFileChange = (event, index) => {
     const files = event.target.files;
-    setSelectedFiles(prevState => {
-      if (uploadType === "Homework") {
-        setUploadedFilesCount(files ? files.length : 0);
-        return { ...prevState, homework: files };
-      } else {
-        const sorSochFiles = [...prevState.sor_soch];
-        const totalFiles = sorSochFiles.reduce((total, fileList) => total + (fileList ? fileList.length : 0), 0);
-        setUploadedFilesCount(totalFiles);
-        sorSochFiles[index] = files;
-        return { ...prevState, sor_soch: sorSochFiles };
-      }
-    });
+    if (uploadType === "Homework") {
+      setSelectedFiles(files);
+      setUploadedFilesCount(files ? files.length : 0);
+    } else {
+      const newSorSochFiles = [...sorSochFiles];
+      newSorSochFiles[index] = files;
+    setSorSochFiles(newSorSochFiles);
+    const totalFiles = newSorSochFiles.reduce((total, fileList) => total + (fileList ? fileList.length : 0), 0);
+    setUploadedFilesCount(totalFiles);
+    }
   };
 
   const handleUpload = async () => {
-    const formData = new FormData();
+    let formData = new FormData();
     if (uploadType === "Homework") {
-      if (selectedFiles.homework) {
-        for (let i = 0; i < selectedFiles.homework.length; i++) {
-          formData.append('files', selectedFiles.homework[i]);
-          console.log(selectedFiles.homework[i]);
+      if (selectedFiles.length > 0) {
+        for (let i = 0; i < selectedFiles.length; i++) {
+          formData.append('files', selectedFiles[i]);
         }
       }
     } else {
-      selectedFiles.sor_soch.forEach((files, index) => {
-        if (files) {
-          for (let i = 0; i < files.length; i++) {
-            formData.append(`files_sor_soch_${index}`, files[i]);
-          }
+      if (sorSochFiles[0].length > 0) {
+        for (let i = 0; i < sorSochFiles[0].length; i++) {
+          formData.append('empty_template', sorSochFiles[0][i]);
         }
-      });
+      }
+      if (sorSochFiles[1].length > 0) {
+        for (let i = 0; i < sorSochFiles[1].length; i++) {
+          formData.append('student_work', sorSochFiles[1][i]);
+        }
+      }
     }
+
+    console.log(sorSochFiles);
 
     formData.append("subject", subject);
     formData.append("grade", grade);
     formData.append("kindness", kindness);
     formData.append("language", language);
-    formData.append("uploadType", uploadType);
     formData.append("maxScore", maxScore);
 
     setLoading(true);
+console.log("FormData:", ...formData.entries());
     try {
-      const response = await axios.post('https://aisun-production.up.railway.app/api/v1/marks', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log(response.data);
+      let response;
+      if (uploadType === "Homework") {
+        response = await axios.post('https://aisun-production.up.railway.app/api/v1/homework', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        });
+      } else {
+        response = await axios.post('https://aisun-production.up.railway.app/api/v1/sor_soch', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        });
+      }
       setResults(response.data);
-      await axios.post('https://aisun-production.up.railway.app/api/increment-upload-count');
-      const uploadCountResponse = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
-      setUploadCount(uploadCountResponse.data.uploadCount);
+      // await axios.post('https://aisun-production.up.railway.app/api/increment-upload-count');
+      // const uploadCountResponse = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
+      // setUploadCount(uploadCountResponse.data.uploadCount);
     } catch (error) {
       console.error('Error uploading files:', error);
       alert('Error uploading files.');
@@ -867,9 +878,15 @@ const UploadImage = () => {
                   <Dropzone onFileChange={handleFileChange} />
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Dropzone onFileChange={(e) => handleFileChange(e, 0)} />
-                    <Dropzone onFileChange={(e) => handleFileChange(e, 1)} />
-                  </div>
+      <div>
+        <p className="mb-2 text-sm text-gray-600">Загрузите бланк СОР/СОЧ:</p>
+        <Dropzone onFileChange={(e) => handleFileChange(e, 0)} />
+      </div>
+      <div>
+        <p className="mb-2 text-sm text-gray-600">Загрузите работу ученика:</p>
+        <Dropzone onFileChange={(e) => handleFileChange(e, 1)} />
+      </div>
+    </div>
                 )}
                 <motion.button
                   whileTap={{ scale: 0.95 }}
