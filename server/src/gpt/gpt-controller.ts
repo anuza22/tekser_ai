@@ -69,7 +69,7 @@ class GptController {
   }
 
   checkHW = async (req: Request, res: Response) => {
-    const { subject, grade, language, kidness, maxScore } = req.body;
+    const { subject, grade, language, kidness, maxScore, evaluationCriteria } = req.body;
 
     if (!req.files || (req.files as Express.Multer.File[]).length === 0) {
       return res.status(400).json({ error: "You must provide at least one file." });
@@ -94,7 +94,7 @@ class GptController {
       }
 
       // Вызываем ваш сервис для обработки файлов и других параметров
-      const response = await this.userService.checkHW(uploadedFileLinks, subject, grade, language, kidness, maxScore );
+      const response = await this.userService.checkHW(uploadedFileLinks, subject, grade, language, kidness, maxScore, evaluationCriteria );
       console.log(response);
 
       res.status(200).json(response);
@@ -104,7 +104,7 @@ class GptController {
   };
 
   checkSorSoch = async (req: Request, res: Response) => {
-    const { subject, grade, language, kindness, maxScore } = req.body;
+    const { subject, grade, language, kindness, maxScore, evaluationCriteria } = req.body;
 
     if (!req.files || !req.files['empty_template'] || !req.files['student_work']) {
       console.log('errorrrrrrrrrr');    
@@ -159,7 +159,7 @@ class GptController {
       console.log("studentWorks", studentWorks_s3 )
 
 
-      const response = await this.userService.checkSorSoch(emptyTemplates_s3, studentWorks_s3, subject, grade, language, kindness, maxScore);
+      const response = await this.userService.checkSorSoch(emptyTemplates_s3, studentWorks_s3, subject, grade, language, kindness, maxScore, evaluationCriteria);
       res.status(200).json(response);
     } catch (error: any) {
       res.status(500).json({ error: error.message });

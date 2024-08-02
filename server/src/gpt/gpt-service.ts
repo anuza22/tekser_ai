@@ -49,7 +49,7 @@ async function annotateImageInMemory(imageUrl: string, correctPositions: { x: nu
 }
 
 class GPTservice {
-  async checkHW(imagePaths: string[], subject: string, grade: number, language: string, kindness: number, maxScore: number) {
+  async checkHW(imagePaths: string[], subject: string, grade: number, language: string, kindness: number, maxScore: number, description: string) {
     console.log(imagePaths);
     try {
       // Ensure there are exactly 5 image URLs
@@ -65,6 +65,7 @@ class GPTservice {
         .replace('{language}', language)
         .replace('{grade}', `${grade}`)
         .replace("{maxScore}", `${maxScore}`)
+        .replace("{description}", `${description}`)
         .replace('{kindness}', `${kindness}`);
 
       const response = await openai.chat.completions.create({
@@ -137,7 +138,7 @@ class GPTservice {
   }
 
 
-  async checkSorSoch(emptyTemplates: string[], studentWorks: string[], subject: string, grade: number, language: string, kindness: number, maxScore: number) {
+  async checkSorSoch(emptyTemplates: string[], studentWorks: string[], subject: string, grade: number, language: string, kindness: number, maxScore: number, description: string) {
     console.log(emptyTemplates, studentWorks);
     try {
       // Ensure there are exactly 5 image URLs
@@ -160,6 +161,7 @@ class GPTservice {
         .replace('{language}', language)
         .replace('{grade}', `${grade}`)
         .replace("{maxScore}", `${maxScore}`)
+        .replace("{description}", `${description}`)
         .replace('{kindness}', `${kindness}`);
 
       const response = await openai.chat.completions.create({

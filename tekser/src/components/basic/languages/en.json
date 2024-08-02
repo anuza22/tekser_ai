@@ -66,6 +66,8 @@
     "pleaseEnterFirstName": "Please enter your firstname",
     "pleaseEnterLastName": "Please enter your lastname",
     "messageSentSuccess": "Message sent successfully!",
-    "messageSentFail": "Failed to send message."
+    "messageSentFail": "Failed to send message.",
+    "enterCriteria": "Enter evaluation criteria",
+    "evaluationCriteria":  "Evaluation Criteria"
 
 }

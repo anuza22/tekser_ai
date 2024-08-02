@@ -67,7 +67,10 @@
       "pleaseEnterFirstName": "Пожалуйста, введите ваше имя",
       "pleaseEnterLastName": "Пожалуйста, введите вашу фамилию",
       "messageSentSuccess": "Сообщение успешно отправлено!",
-      "messageSentFail": "Не удалось отправить сообщение."
+      "messageSentFail": "Не удалось отправить сообщение.", 
+      "enterCriteria": "Введите критерии оценивания", 
+      "evaluationCriteria": "Критерии оценивания"
+
     
     
   }

@@ -564,13 +564,12 @@ const UploadImage = () => {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(null);
   const [language, setLanguage] = useState(i18n.language);
-  const [uploadCount, setUploadCount] = useState(0);
   const [uploadType, setUploadType] = useState(uploadTypes[0]);
   const [maxScore, setMaxScore] = useState(100); // Новое состояние для максимального балла
+  const [evaluationCriteria, setEvaluationCriteria] = useState(''); // Новое состояние для критериев оценивания
   const [uploadedFilesCount, setUploadedFilesCount] = useState(0);
   const maxFiles = 5;
   const [showAdditionalResources, setShowAdditionalResources] = useState(false);
-  // const [showExampleModal, setShowExampleModal] = useState(false);
   const [selectedExample, setSelectedExample] = useState(null);
   const [showExampleNotification, setShowExampleNotification] = useState(false);
   const [showExampleHint, setShowExampleHint] = useState(false);
@@ -602,26 +601,6 @@ const UploadImage = () => {
     }
   ];
 
-  useEffect(() => {
-    const fetchUploadCount = async () => {
-      try {
-        const response = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
-        setUploadCount(response.data.uploadCount);
-      } catch (error) {
-        console.error('Error fetching upload count:', error);
-      }
-    };
-    fetchUploadCount();
-  }, []);
-
-  const handleUseExample = (example) => {
-    setSelectedFiles({ homework: [new File([], example.description)], sor_soch: [null, null] });
-    setUploadedFilesCount(1);
-    setSubject(example.description.split(' ')[0]);
-    // setShowExampleModal(false);
-    setShowExampleNotification(true);
-    setTimeout(() => setShowExampleNotification(false), 5000);
-  };
 
   const handleExampleHover = (example) => {
     setActiveExample(example);
@@ -686,6 +665,8 @@ const UploadImage = () => {
     formData.append("kindness", kindness);
     formData.append("language", language);
     formData.append("maxScore", maxScore);
+    formData.append("evaluationCriteria", evaluationCriteria); // Добавление критериев оценивания в запрос
+
 
     setLoading(true);
 console.log("FormData:", ...formData.entries());
@@ -823,6 +804,16 @@ console.log("FormData:", ...formData.entries());
                     </label>
                   ))}
                 </div>
+              </motion.div>
+              <motion.div transition={{ type: "spring", stiffness: 300 }}>
+                <label className="block text-gray-700 font-semibold mb-2">{t('evaluationCriteria')}</label>
+                <textarea
+                  value={evaluationCriteria}
+                  onChange={(e) => setEvaluationCriteria(e.target.value)}
+                  className="w-full bg-gray-100 border border-gray-300 rounded-xl py-3 px-4 appearance-none focus:outline-none focus:ring-2 focus:ring-purple-600"
+                  rows="3"
+                  placeholder={t('enterCriteria')}
+                />
               </motion.div>
               <motion.div 
                 transition={{ type: "spring", stiffness: 300 }}

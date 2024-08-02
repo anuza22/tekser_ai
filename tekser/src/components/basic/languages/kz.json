@@ -67,7 +67,10 @@
         "pleaseEnterFirstName": "Өтінеміз, атыңызды енгізіңіз",
         "pleaseEnterLastName": "Өтінеміз, тегіңізді енгізіңіз",
         "messageSentSuccess": "Хабарлама сәтті жіберілді!",
-        "messageSentFail": "Хабарламаны жіберу сәтсіз аяқталды."
+        "messageSentFail": "Хабарламаны жіберу сәтсіз аяқталды.", 
+        "enterCriteria" : "Бағалау критерийлерін енгізіңіз", 
+        "evaluationCriteria": "Бағалау критерийлері"
+          
       
       
 }
