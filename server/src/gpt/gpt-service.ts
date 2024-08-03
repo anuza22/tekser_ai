@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { systemPrompt } from './prompt';
+import { systemPrompt, sorSochPrompt } from './prompt';
 import { Mark } from './models/types';
 import SearchLinks from '../api/getBrowserData';
 import Jimp from 'jimp';
@@ -156,12 +156,13 @@ class GPTservice {
 
       console.log(filledStudImagePaths);
 
-      const prompt = systemPrompt
+      const prompt = sorSochPrompt
         .replace('{subject}', subject)
         .replace('{language}', language)
         .replace('{grade}', `${grade}`)
         .replace("{maxScore}", `${maxScore}`)
         .replace("{description}", `${description}`)
+        .replace("{num}", `${filledTempImagePaths.length}`)
         .replace('{kindness}', `${kindness}`);
 
       const response = await openai.chat.completions.create({
