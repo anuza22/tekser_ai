@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProfilePage from "./components/pages/profile";
@@ -51,7 +51,6 @@ function App() {
   return (
     <Router>
       <TrackPageView />
-      <Switch>
 
       <Routes>
         <Route path="/" element={<Landing />} />
@@ -67,7 +66,6 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-      </Switch>
 
     </Router>
   );
