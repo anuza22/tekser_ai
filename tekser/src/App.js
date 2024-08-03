@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Switch } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProfilePage from "./components/pages/profile";
@@ -16,16 +16,43 @@ import Payment from "./components/pages/payment";
 import Terms from "./components/pages/terms";
 import PageNotFound from "./components/pages/pageNotFound";
 import MyClasses from "./components/pages/myClasses";
+import { useLocation } from "react-router-dom";
+const TrackPageView = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.gtag('config', 'G-R503BVLTP8', {
+      page_path: location.pathname,
+    });
+  }, [location]);
+
+  return null;
+};
 
 function App() {
   const { isAuthenticate } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    const script = document.createElement('script');
+    script.src = `https://www.googletagmanager.com/gtag/js?id=G-R503BVLTP8`;
+    script.async = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-R503BVLTP8');
+    };
     // Здесь вы можете выполнять любые действия по проверке токена или получению текущего пользователя из localStorage
   }, [isAuthenticate]);
 
   return (
     <Router>
+      <TrackPageView />
+      <Switch>
+
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/contact" element={<Contact />} />
@@ -40,6 +67,8 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      </Switch>
+
     </Router>
   );
 }
