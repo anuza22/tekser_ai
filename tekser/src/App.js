@@ -17,13 +17,13 @@ import Terms from "./components/pages/terms";
 import PageNotFound from "./components/pages/pageNotFound";
 import MyClasses from "./components/pages/myClasses";
 import { useLocation } from "react-router-dom";
+import { initializeAnalytics, logPageView } from './analytics';
+
 const TrackPageView = () => {
   const location = useLocation();
 
   useEffect(() => {
-    window.gtag('config', 'G-R503BVLTP8', {
-      page_path: location.pathname,
-    });
+    logPageView();
   }, [location]);
 
   return null;
@@ -33,24 +33,12 @@ function App() {
   const { isAuthenticate } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = `https://www.googletagmanager.com/gtag/js?id=G-R503BVLTP8`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    script.onload = () => {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', 'G-R503BVLTP8');
-    };
     // Здесь вы можете выполнять любые действия по проверке токена или получению текущего пользователя из localStorage
   }, [isAuthenticate]);
 
   return (
     <Router>
-      <TrackPageView />
+    <TrackPageView />
 
       <Routes>
         <Route path="/" element={<Landing />} />
