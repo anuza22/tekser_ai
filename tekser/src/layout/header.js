@@ -79,11 +79,11 @@ const Header = () => {
             <ul className="flex justify-center items-center p-4 border-gray-100 rounded-lg w-full flex-row md:space-x-8 space-x-3 xs:space-x-6 mt-0 text-sm font-medium border-0">
               {authState ? (
                 <>
-                  <li className="md:flex text-base font-poppinsSemiBold hidden ml-2 text-gray-700 active:text-purple-700 hover:text-purple-700 active:bg-primary-100 rounded-lg px-3 py-2">
+                  {/* <li className="md:flex text-base font-poppinsSemiBold hidden ml-2 text-gray-700 active:text-purple-700 hover:text-purple-700 active:bg-primary-100 rounded-lg px-3 py-2">
                     <Link to="/myclasses" className="pr-2">
                       My Classes
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <LanguageSelector />
                   </li>
@@ -131,7 +131,7 @@ const Header = () => {
                                 </Link>
                               )}
                             </Menu.Item> */}
-                            {/* <Menu.Item>
+                            <Menu.Item>
                               {({ active }) => (
                                 <button
                                   className={classNames(
@@ -143,8 +143,8 @@ const Header = () => {
                                   Sign out
                                 </button>
                               )}
-                            </Menu.Item> */}
-                            <Menu.Item>
+                            </Menu.Item>
+                            {/* <Menu.Item>
                               {({ active }) => (
                                 <button
                                   className={classNames(
@@ -156,7 +156,7 @@ const Header = () => {
                                   My profile
                                 </button>
                               )}
-                            </Menu.Item>
+                            </Menu.Item> */}
                           </div>
                         </Menu.Items>
                       </Transition>
@@ -168,14 +168,14 @@ const Header = () => {
                   <li>
                     <LanguageSelector />
                   </li>
-                  {/* <li>
+                  <li>
                     <button
                       className="block w-full text-sm bg-primary-600 hover:bg-primary-700 py-2.5 px-7 rounded-lg text-white font-poppinsSemiBold"
                       onClick={LoginHandle}
                     >
                       Login
                     </button>
-                  </li> */}
+                  </li>
 
                 </>
               )}
