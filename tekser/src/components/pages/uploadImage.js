@@ -909,7 +909,7 @@ console.log("FormData:", ...formData.entries());
                 </div>
                 <div>
                   <p className="mb-2"><strong>{t('feedback')}:</strong> {results[0].feedback}</p>
-                  {/* <p className="mb-2"><strong>{t("image")}:</strong> {results.annotatedImageUrl}</p> */}
+                  <p className="mb-2"><strong>{t("image")}:</strong> {results.annotatedImageUrl}</p>
                   <p className="mb-2"><strong>{t('mistakes')}:</strong> {results[0].mistakes}</p>
                 </div>
               </div>
@@ -927,7 +927,7 @@ console.log("FormData:", ...formData.entries());
                 </div>
                 {showAdditionalResources && (
                   <ul className="list-disc list-inside space-y-2 mt-4">
-                    {results[0].searchLinks && results[0].searchLinks.map((link, index) => (
+                    {results.searchLinks && results.searchLinks.map((link, index) => (
                       <li key={index}>
                         <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{link}</a>
                       </li>
