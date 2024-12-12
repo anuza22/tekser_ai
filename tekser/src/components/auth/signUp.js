@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import LeftSide from "../../layout/authLeft";
-import { handleSignUp } from "../../redux/user/user"; // Импорт вашего экшена
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -22,7 +21,7 @@ const SignUp = () => {
     if (error.email === "" && error.password === "" && error.username === "" ) {
       const data = { email, password, username };
       try {
-        await dispatch(handleSignUp(data));
+        // await dispatch(handleSignUp(data));
         navigate("/login");
       } catch (err) {
         console.error("SignUp error:", err);

@@ -18,6 +18,7 @@ import PageNotFound from "./components/pages/pageNotFound";
 import MyClasses from "./components/pages/myClasses";
 import { useLocation } from "react-router-dom";
 import { initializeAnalytics, logPageView } from './analytics';
+import SignUp from "./components/auth/signUp";
 
 const TrackPageView = () => {
   const location = useLocation();
@@ -46,6 +47,7 @@ function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/upload" element={<UploadImage />} />
         <Route path="/setting" element={<Setting />} />
