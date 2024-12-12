@@ -903,14 +903,14 @@ console.log("FormData:", ...formData.entries());
               <h2 className="text-4xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 mb-6">{t('results')}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <p className="mb-2"><strong>{t('mark')}:</strong> {results.mark}</p>
-                  <p className="mb-2"><strong>{t('correctProblems')}:</strong> {results.correct_problems}</p>
-                  <p className="mb-2"><strong>{t('wrongTasks')}:</strong> {results.wrong_tasks}</p>
+                  <p className="mb-2"><strong>{t('mark')}:</strong> {results[0].mark}</p>
+                  <p className="mb-2"><strong>{t('correctProblems')}:</strong> {results[0].correct_problems}</p>
+                  <p className="mb-2"><strong>{t('wrongTasks')}:</strong> {results[0].wrong_tasks}</p>
                 </div>
                 <div>
-                  <p className="mb-2"><strong>{t('feedback')}:</strong> {results.feedback}</p>
+                  <p className="mb-2"><strong>{t('feedback')}:</strong> {results[0].feedback}</p>
                   {/* <p className="mb-2"><strong>{t("image")}:</strong> {results.annotatedImageUrl}</p> */}
-                  <p className="mb-2"><strong>{t('mistakes')}:</strong> {results.mistakes}</p>
+                  <p className="mb-2"><strong>{t('mistakes')}:</strong> {results[0].mistakes}</p>
                 </div>
               </div>
               <div className="mt-6">
@@ -927,7 +927,7 @@ console.log("FormData:", ...formData.entries());
                 </div>
                 {showAdditionalResources && (
                   <ul className="list-disc list-inside space-y-2 mt-4">
-                    {results.searchLinks && results.searchLinks.map((link, index) => (
+                    {results[0].searchLinks && results[0].searchLinks.map((link, index) => (
                       <li key={index}>
                         <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{link}</a>
                       </li>
