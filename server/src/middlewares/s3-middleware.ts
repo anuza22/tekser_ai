@@ -33,7 +33,7 @@ class S3Service {
         ACL: 'public-read',
         ContentType: 'image/png'
       });
-      return `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+      return `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`
     } catch (error) {
       console.error('Error uploading file to S3:', error);
       throw error;

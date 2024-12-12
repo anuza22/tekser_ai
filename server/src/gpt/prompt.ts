@@ -36,7 +36,7 @@ Please, return your response in the following JSON format:
    }
 ]
 
-If the user prompt is irrelevant, return an empty JSON object.
+Please return your response as a valid JSON. Do not include any text outside the JSON. only in json without Markdown
 `;
 
 

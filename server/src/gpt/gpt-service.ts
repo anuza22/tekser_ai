@@ -20,6 +20,8 @@ async function annotateImageInMemory(imageUrl: string, correctPositions: { x: nu
     const image = await Jimp.read(imageBuffer);
 
     const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
+    if (!Array.isArray(correctPositions)) correctPositions = [];
+    if (!Array.isArray(wrongPositions)) wrongPositions = [];
 
     // Аннотируем правильные позиции
     correctPositions.forEach(position => {
@@ -51,6 +53,7 @@ async function annotateImageInMemory(imageUrl: string, correctPositions: { x: nu
 class GPTservice {
   async checkHW(imagePaths: string[], subject: string, grade: number, language: string, kindness: number, maxScore: number, description: string) {
     console.log(imagePaths);
+    imagePaths = imagePaths.map(link => link.replace(/'/g, ''));
     try {
       // Ensure there are exactly 5 image URLs
       const filledImagePaths = [...imagePaths];
@@ -68,47 +71,66 @@ class GPTservice {
         .replace("{description}", `${description}`)
         .replace('{kindness}', `${kindness}`);
 
+        const contentMessage = `
+        ${prompt}
+        
+        Analyze these images (their URLs are listed below):
+        ${filledImagePaths.join('\n')}
+        
+        Remember: Return ONLY valid JSON as described above.
+            `.trim();
+
       const response = await openai.chat.completions.create({
-        model: "gpt-4o",
-        response_format: {
-          type: 'json_object'
-        },
-        messages: [{
-          role: "user",
-          content: [
-            { type: "text", text: prompt },
-            {
-              type: "image_url",
-              image_url: { "url": filledImagePaths[0],  "detail": "auto"},
-            },
-            {
-              type: "image_url",
-              image_url: { "url": filledImagePaths[1],  "detail": "auto"},
-            },
-            {
-              type: "image_url",
-              image_url: { "url": filledImagePaths[2],  "detail": "auto" },
-            },
-            {
-              type: "image_url",
-              image_url: { "url": filledImagePaths[3],  "detail": "auto" },
-            },
-            {
-              type: "image_url",
-              image_url: { "url": filledImagePaths[4],  "detail": "auto" },
-            }
-          ],
-        }],
+        model: "gpt-4o-mini",
+        // response_format: {
+        //   type: 'json_object'
+        // },
+        // messages: [{
+        //   role: "user",
+        //   content: [
+        //     { type: "text", text: prompt },
+        //     {
+        //       type: "image_url",
+        //       image_url: { "url": filledImagePaths[0],  },
+        //     },
+        //     {
+        //       type: "image_url",
+        //       image_url: { "url": filledImagePaths[1], },
+        //     },
+        //     {
+        //       type: "image_url",
+        //       image_url: { "url": filledImagePaths[2],   },
+        //     },
+        //     {
+        //       type: "image_url",
+        //       image_url: { "url": filledImagePaths[3],  },
+        //     },
+        //     {
+        //       type: "image_url",
+        //       image_url: { "url": filledImagePaths[4],   },
+        //     }
+        //   ],
+        // }],
+        messages: [
+          {
+            role: "user",
+            content: contentMessage
+          }
+        ],
+
         temperature: 0.3
       });
 
       console.log(response.choices);
       const resContent = response.choices[0].message.content;
+      
+
+      console.log(resContent);
 
       if (resContent) {
         const parsedRes = JSON.parse(resContent);
         console.log(parsedRes);
-        if (parsedRes.google_search_query) {
+        if (parsedRes && parsedRes[0] && parsedRes[0].google_search_query) {
           const searchLinks = await SearchLinks(parsedRes.google_search_query);
           parsedRes.searchLinks = searchLinks.map(item => item.link);
         }
@@ -116,7 +138,7 @@ class GPTservice {
 
         // Аннотируем изображение в памяти
         const annotatedImageBuffer = await annotateImageInMemory(
-          filledImagePaths[1],
+          filledImagePaths[0],
           parsedRes.correct_problems_positions,
           parsedRes.wrong_problems_positions
         );
@@ -129,7 +151,8 @@ class GPTservice {
 
         return parsedRes;
       } else {
-        return null;
+        return console.error();
+        ;
       }
     } catch (error: any) {
       console.log(error.message);

@@ -43,6 +43,7 @@ class GptController {
       }
 
       // Вызываем ваш сервис для обработки файлов и других параметров
+      console.log(uploadedFileLinks);
       const response = await this.userService.checkHW(uploadedFileLinks, subject, grade, language, kidness, maxScore, evaluationCriteria );
       console.log(response);
 
