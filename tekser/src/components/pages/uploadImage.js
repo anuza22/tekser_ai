@@ -685,6 +685,7 @@ console.log("FormData:", ...formData.entries());
           }
         });
       }
+      console.log(response.data);
       setResults(response.data);
       // await axios.post('https://aisun-production.up.railway.app/api/increment-upload-count');
       // const uploadCountResponse = await axios.get('https://aisun-production.up.railway.app/api/upload-count');
